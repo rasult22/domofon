@@ -1,8 +1,9 @@
-import { Home, Mic, MicOff, Phone, PhoneOff, Video } from 'lucide-react-native';
+import { Home, Mic, MicOff, Phone, PhoneOff, Unlock } from 'lucide-react-native';
 import React, { useEffect, useState } from 'react';
 import { Dimensions, StatusBar, Text, TouchableOpacity, View } from 'react-native';
 import Animated, {
   Easing,
+  LinearTransition,
   useAnimatedStyle,
   useSharedValue,
   withRepeat,
@@ -16,11 +17,13 @@ export default function IntercomCallScreen() {
  const [callStatus, setCallStatus] = useState('incoming'); // incoming, accepted, declined
  const [isMuted, setIsMuted] = useState(false);
  const [callDuration, setCallDuration] = useState(0);
+ const [isDoorOpened, setIsDoorOpened] = useState(false);
 
  // Reanimated values
  const pulseScale = useSharedValue(1);
  const pulseOpacity = useSharedValue(1);
  const buttonScale = useSharedValue(1);
+ const doorButtonScale = useSharedValue(1);
 
  useEffect(() => {
    // Pulse animation for incoming call
@@ -58,7 +61,7 @@ export default function IntercomCallScreen() {
    }
  }, [callStatus]);
 
- const formatTime = (seconds: number) => {
+ const formatTime = (seconds:number) => {
    const mins = Math.floor(seconds / 60);
    const secs = seconds % 60;
    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
@@ -89,6 +92,20 @@ export default function IntercomCallScreen() {
    setIsMuted(!isMuted);
  };
 
+ const handleOpenDoor = () => {
+   doorButtonScale.value = withSequence(
+     withTiming(0.9, { duration: 100 }),
+     withTiming(1.1, { duration: 150 }),
+     withTiming(1, { duration: 100 })
+   );
+   setIsDoorOpened(true);
+   
+   // Reset door status after 3 seconds
+   setTimeout(() => {
+     setIsDoorOpened(false);
+   }, 3000);
+ };
+
  // Animated styles
  const pulseAnimatedStyle = useAnimatedStyle(() => {
    return {
@@ -100,6 +117,12 @@ export default function IntercomCallScreen() {
  const buttonAnimatedStyle = useAnimatedStyle(() => {
    return {
      transform: [{ scale: buttonScale.value }],
+   };
+ });
+
+ const doorButtonAnimatedStyle = useAnimatedStyle(() => {
+   return {
+     transform: [{ scale: doorButtonScale.value }],
    };
  });
 
@@ -117,7 +140,10 @@ export default function IntercomCallScreen() {
          </Text>
          <TouchableOpacity 
            className="bg-blue-600 px-8 py-3 rounded-full"
-           onPress={() => setCallStatus('incoming')}
+           onPress={() => {
+             setCallStatus('incoming');
+             setIsDoorOpened(false);
+           }}
            activeOpacity={0.8}
          >
            <Text className="text-white font-semibold">Новый звонок</Text>
@@ -147,7 +173,7 @@ export default function IntercomCallScreen() {
      </View>
 
      {/* Main call info */}
-     <View className="flex-1 justify-center items-center px-8">
+     <Animated.View layout={LinearTransition.duration(400).springify().damping(40).stiffness(80)} className="flex-1 justify-center items-center px-8">
        <View className="items-center mb-12">
          {/* Intercom icon with pulse animation */}
          <Animated.View 
@@ -169,7 +195,7 @@ export default function IntercomCallScreen() {
          <Text className="text-white text-3xl font-bold mb-2">
            Домофон
          </Text>
-         <Text className="text-gray-400 text-base text-center">
+         <Text className="text-gray-400 mt-2 text-base text-center">
            Кто-то звонит в домофон
          </Text>
        </View>
@@ -194,20 +220,28 @@ export default function IntercomCallScreen() {
            <Text className="text-green-400 text-sm ml-2">Соединен</Text>
          </View>
        )}
-     </View>
+
+       {/* Door status indicator */}
+       {isDoorOpened && callStatus === 'accepted' && (
+         <View className="flex-row items-center mb-4">
+           <View className="w-3 h-3 bg-orange-500 rounded-full mr-2" />
+           <Text className="text-orange-400 text-sm">Дверь открыта</Text>
+         </View>
+       )}
+     </Animated.View>
 
      {/* Call controls */}
      <View className="pb-12 px-8">
-        {/* Quick actions hint */}
-        {callStatus === 'incoming' && (
-          <View className="px-8 pb-8">
-            <View className="bg-gray-800 bg-opacity-80 rounded-2xl p-4">
-              <Text className="text-gray-300 text-sm text-center">
-                Примите звонок, чтобы поговорить с посетителем
-              </Text>
-            </View>
-          </View>
-        )}
+      {/* Quick actions hint */}
+     {callStatus === 'incoming' && (
+       <View className="pb-8 px-8">
+         <View className="bg-gray-800 bg-opacity-80 rounded-2xl p-4">
+           <Text className="text-gray-300 text-sm text-center">
+             Примите звонок, чтобы поговорить с посетителем
+           </Text>
+         </View>
+       </View>
+     )}
        {callStatus === 'incoming' ? (
          <View className="flex-row justify-center items-center" style={{ columnGap: 80 }}>
            {/* Decline button */}
@@ -249,47 +283,66 @@ export default function IntercomCallScreen() {
        ) : (
          <View className="items-center space-y-6">
            {/* Call controls when active */}
-           <View className="flex-row justify-center items-center" style={{ columnGap: 32 }}>
+           <View className="flex-row justify-center items-center pb-8" style={{ columnGap: 32 }}>
              {/* Mute button */}
              <TouchableOpacity
-               className={`w-14 h-14 rounded-full items-center justify-center ${
+               className={`w-20 h-20 rounded-full items-center justify-center ${
                  isMuted ? 'bg-red-600' : 'bg-gray-700'
                }`}
                onPress={toggleMute}
                activeOpacity={0.8}
              >
-               {isMuted ? <MicOff size={24} color="white" /> : <Mic size={24} color="white" />}
-             </TouchableOpacity>
-
-             {/* Video button */}
-             <TouchableOpacity
-               className="w-14 h-14 bg-gray-700 rounded-full items-center justify-center"
-               activeOpacity={0.8}
-             >
-               <Video size={24} color="white" />
+               {isMuted ? <MicOff size={32} color="white" /> : <Mic size={32} color="white" />}
              </TouchableOpacity>
            </View>
-
-           {/* End call button */}
-           <TouchableOpacity
-             className="w-20 h-20 bg-red-600 rounded-full items-center justify-center shadow-xl"
-             onPress={handleEndCall}
-             activeOpacity={0.8}
-             style={{
-               shadowColor: '#DC2626',
-               shadowOffset: { width: 0, height: 4 },
-               shadowOpacity: 0.3,
-               shadowRadius: 8,
-               elevation: 8,
-             }}
-           >
-             <PhoneOff size={32} color="white" />
-           </TouchableOpacity>
+           <View className='flex-row justify-between w-full px-8'>
+            {/* Open Door button */}
+            <Animated.View style={doorButtonAnimatedStyle} className="items-center gap-2">
+              <TouchableOpacity
+                className={`w-20 h-20 rounded-full items-center justify-center shadow-xl ${
+                  isDoorOpened ? 'bg-orange-600' : 'bg-blue-600'
+                }`}
+                onPress={handleOpenDoor}
+                activeOpacity={0.8}
+                disabled={isDoorOpened}
+                style={{
+                  shadowColor: isDoorOpened ? '#EA580C' : '#2563EB',
+                  shadowOffset: { width: 0, height: 4 },
+                  shadowOpacity: 0.3,
+                  shadowRadius: 8,
+                  elevation: 8,
+                }}
+              >
+                <Unlock size={32} color="white" />
+              </TouchableOpacity>
+                {/* Door button label */}
+                <Text className={`text-sm font-medium ${
+                  isDoorOpened ? 'text-orange-400' : 'text-blue-400'
+                }`}>
+                  {isDoorOpened ? 'Дверь открыта' : 'Открыть дверь'}
+                </Text>
+            </Animated.View>
+              {/* End call button */}
+            <TouchableOpacity
+              className="w-20 h-20 bg-red-600 rounded-full items-center justify-center shadow-xl"
+              onPress={handleEndCall}
+              activeOpacity={0.8}
+              style={{
+                shadowColor: '#DC2626',
+                shadowOffset: { width: 0, height: 4 },
+                shadowOpacity: 0.3,
+                shadowRadius: 8,
+                elevation: 8,
+              }}
+            >
+              <PhoneOff size={32} color="white" />
+            </TouchableOpacity>
+          </View>
          </View>
        )}
      </View>
 
-   
+     
    </View>
  );
 }
