@@ -1,4 +1,4 @@
-import IntercomCallScreen from "@/screens/incoming-call/incoming-call-screen";
+import IntercomCallScreen from "@/screens/calling/incoming-call-screen";
 import { View } from "react-native";
 
 export default function Index() {
