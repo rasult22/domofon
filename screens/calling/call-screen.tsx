@@ -1,4 +1,7 @@
 // import { WebRTCNativeClient } from "@/webrtc/native-client";
+import { pb } from "@/queries/client";
+import { useCalls, useCallsSubscription } from "@/queries/webrtc";
+import { acceptCall } from "@/webrtc/accept-call";
 import { Home, Mic, MicOff, PhoneOff, Unlock } from "lucide-react-native";
 import React, { useEffect, useState } from "react";
 import { StatusBar, Text, TouchableOpacity, View } from "react-native";
@@ -13,10 +16,18 @@ import { CallDeclined } from "./call-declined";
 import { GettingCall } from "./getting-call";
 
 export default function IntercomCallScreen() {
-  // webrtc
-  // const client = useRef<WebRTCNativeClient>(new WebRTCNativeClient())
-
+  
+  const {data} = useCalls()
+  useCallsSubscription()
   // ui states
+  const [call, setCall] = useState<{
+    id: string;
+    user_id: string;
+    offer: any;
+    answer: any;
+    receiver_id: string;
+    status: string;
+}>()
   const [callStatus, setCallStatus] = useState("declined"); // incoming, accepted, declined
   const [isMuted, setIsMuted] = useState(false);
   const [callDuration, setCallDuration] = useState(0);
@@ -27,6 +38,18 @@ export default function IntercomCallScreen() {
   const pulseOpacity = useSharedValue(1);
   const buttonScale = useSharedValue(1);
   const doorButtonScale = useSharedValue(1);
+
+  useEffect(() => {
+    console.log(data, 'calls')
+    if (callStatus === 'declined' && data?.length) {
+      const call = data.find(c => c.status === 'pending')
+      console.log('got i new call here it is:', call)
+      if (call) {
+        setCallStatus('incoming')
+        setCall(call)
+      }
+    }
+  }, [data])
 
   useEffect(() => {
     pulseScale.value = withTiming(1, { duration: 300 });
@@ -56,6 +79,9 @@ export default function IntercomCallScreen() {
     );
     setCallStatus("accepted");
     setCallDuration(0);
+    if (call) {
+      acceptCall(call.id)
+    }
   };
 
   const handleDecline = () => {
@@ -64,6 +90,9 @@ export default function IntercomCallScreen() {
       withTiming(1, { duration: 100 })
     );
     setCallStatus("declined");
+    if (call) {
+      pb.collection('calls').delete(call.id)
+    }
   };
 
   const handleEndCall = () => {
