@@ -54,6 +54,7 @@ export const acceptCall = async (callId: string) => {
   // Handle answer ICE candidates
   pc.addEventListener('icecandidate', (event) => {
     if (event.candidate) {
+      console.log('creating answer Candidates')
       answerCandidates.create({
         call_id: callId,
         data: event.candidate.toJSON(),
