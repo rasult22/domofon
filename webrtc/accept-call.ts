@@ -7,6 +7,7 @@ import {
   RTCSessionDescription
 } from 'react-native-webrtc';
 const pb = new PocketBase('https://rasult22.pockethost.io');
+pb.autoCancellation(false);
 
 const calls = pb.collection('calls');
 const offerCandidates = pb.collection('offer_candidates');
@@ -52,10 +53,10 @@ export const acceptCall = async (callId: string) => {
   });
 
   // Handle answer ICE candidates
-  pc.addEventListener('icecandidate', (event) => {
+  pc.addEventListener('icecandidate', async (event) => {
     if (event.candidate) {
       console.log('creating answer Candidates')
-      answerCandidates.create({
+      await answerCandidates.create({
         call_id: callId,
         data: event.candidate.toJSON(),
       });
