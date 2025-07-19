@@ -1,4 +1,5 @@
 import PocketBase from 'pocketbase';
+import InCallManager from 'react-native-incall-manager';
 import {
   mediaDevices,
   MediaStream,
@@ -16,17 +17,17 @@ const answerCandidates = pb.collection('answer_candidates');
 export const acceptCall = async (callId: string) => {
   // Authenticate
   const auth = await pb
-    .collection('users')
-    .authWithPassword('webrtc_native', '12345678');
-
+  .collection('users')
+  .authWithPassword('webrtc_native', '12345678');
+  
   // Get ICE servers
   const config = {
     iceServers: [{
       urls: [
-        "stun1.l.google.com:19302",
-        "stun2.l.google.com:19302",
-        "stun3.l.google.com:19302",
-        "stun4.l.google.com:19302"
+        "stun:stun1.l.google.com:19302",
+        "stun:stun2.l.google.com:19302",
+        "stun:stun3.l.google.com:19302",
+        "stun:stun4.l.google.com:19302"
       ]
     }],
     iceCandidatePoolSize: 10,
@@ -40,7 +41,6 @@ export const acceptCall = async (callId: string) => {
     audio: true,
     video: false,
   });
-
   // Add local audio tracks
   localStream.getTracks().forEach(track => {
     pc.addTrack(track, localStream);
@@ -48,7 +48,7 @@ export const acceptCall = async (callId: string) => {
 
   // Setup remote stream
   const remoteStream = new MediaStream();
-
+  InCallManager.start();
   
   pc.addEventListener('track', (event) => {
     event.streams[0]?.getTracks().forEach(track => {
@@ -59,9 +59,13 @@ export const acceptCall = async (callId: string) => {
     // TODO: pass remoteStream to your app’s audio playback logic
     // e.g., setRemoteStream(remoteStream) in your state
   });
+  pc.addEventListener('iceconnectionstatechange',(event) => {
+    console.log(event, 'connection state changed', pc.connectionState)
+  });
 
   // Handle answer ICE candidates
   pc.addEventListener('icecandidate', async (event) => {
+    console.log('we got ice candidate', event)
     if (event.candidate) {
       console.log('creating answer Candidates')
       await answerCandidates.create({
