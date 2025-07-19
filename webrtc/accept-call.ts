@@ -17,7 +17,7 @@ export const acceptCall = async (callId: string) => {
   // Authenticate
   const auth = await pb
     .collection('users')
-    .authWithPassword('webrtc_web', '12345678');
+    .authWithPassword('webrtc_native', '12345678');
 
   // Get ICE servers
   const config = {
@@ -48,6 +48,8 @@ export const acceptCall = async (callId: string) => {
 
   // Setup remote stream
   const remoteStream = new MediaStream();
+
+  
   pc.addEventListener('track', (event) => {
     event.streams[0]?.getTracks().forEach(track => {
       console.log(track, 'track')
