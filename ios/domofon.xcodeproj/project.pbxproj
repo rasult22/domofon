@@ -7,29 +7,29 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0C1E9B23A741483C1A685F0D /* libPods-domofon.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D785E5F04B570C0ED5518F1 /* libPods-domofon.a */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
-		29F050073DD79478F9F1BD17 /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ECACD3CFE822D2F616DC8A4 /* ExpoModulesProvider.swift */; };
+		2F149E8DDA196F1962D10600 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 64BA73C2718AB5DF92BB10DC /* PrivacyInfo.xcprivacy */; };
 		3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */; };
-		7D3463585BE98C7D9814B8A2 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 055CBB561A5C77AA1C678A03 /* PrivacyInfo.xcprivacy */; };
+		4D89E7F1F81653D5646E2FFF /* libPods-domofon.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1848FDF3E5E76BAF962DF922 /* libPods-domofon.a */; };
+		AAB1C2ECBD0BE50C40DCFA11 /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8314DFB7EF093DCC86F56C8 /* ExpoModulesProvider.swift */; };
 		BB2F792D24A3F905000567C9 /* Expo.plist in Resources */ = {isa = PBXBuildFile; fileRef = BB2F792C24A3F905000567C9 /* Expo.plist */; };
 		F11748422D0307B40044C1D9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11748412D0307B40044C1D9 /* AppDelegate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		055CBB561A5C77AA1C678A03 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; name = PrivacyInfo.xcprivacy; path = domofon/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		0930F716F3CFAC2782478A00 /* Pods-domofon.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-domofon.release.xcconfig"; path = "Target Support Files/Pods-domofon/Pods-domofon.release.xcconfig"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* domofon.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = domofon.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = domofon/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = domofon/Info.plist; sourceTree = "<group>"; };
-		31DB7F69DE74509ED51E4557 /* Pods-domofon.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-domofon.release.xcconfig"; path = "Target Support Files/Pods-domofon/Pods-domofon.release.xcconfig"; sourceTree = "<group>"; };
-		3ECACD3CFE822D2F616DC8A4 /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-domofon/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
-		7B058CB3148DCF87D570D2A0 /* Pods-domofon.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-domofon.debug.xcconfig"; path = "Target Support Files/Pods-domofon/Pods-domofon.debug.xcconfig"; sourceTree = "<group>"; };
-		9D785E5F04B570C0ED5518F1 /* libPods-domofon.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-domofon.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		1848FDF3E5E76BAF962DF922 /* libPods-domofon.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-domofon.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		64BA73C2718AB5DF92BB10DC /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = domofon/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		A8314DFB7EF093DCC86F56C8 /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-domofon/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
 		AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = SplashScreen.storyboard; path = domofon/SplashScreen.storyboard; sourceTree = "<group>"; };
 		BB2F792C24A3F905000567C9 /* Expo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Expo.plist; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		F11748412D0307B40044C1D9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = domofon/AppDelegate.swift; sourceTree = "<group>"; };
 		F11748442D0722820044C1D9 /* domofon-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "domofon-Bridging-Header.h"; path = "domofon/domofon-Bridging-Header.h"; sourceTree = "<group>"; };
+		F4BFA0FEBD5E96F9A6CBF630 /* Pods-domofon.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-domofon.debug.xcconfig"; path = "Target Support Files/Pods-domofon/Pods-domofon.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -37,21 +37,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0C1E9B23A741483C1A685F0D /* libPods-domofon.a in Frameworks */,
+				4D89E7F1F81653D5646E2FFF /* libPods-domofon.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		044BB97C30AC52E0465F84F4 /* ExpoModulesProviders */ = {
-			isa = PBXGroup;
-			children = (
-				D60EB50469B6E3E821F2D9E7 /* domofon */,
-			);
-			name = ExpoModulesProviders;
-			sourceTree = "<group>";
-		};
 		13B07FAE1A68108700A75B9A /* domofon */ = {
 			isa = PBXGroup;
 			children = (
@@ -61,7 +53,7 @@
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */,
-				055CBB561A5C77AA1C678A03 /* PrivacyInfo.xcprivacy */,
+				64BA73C2718AB5DF92BB10DC /* PrivacyInfo.xcprivacy */,
 			);
 			name = domofon;
 			sourceTree = "<group>";
@@ -70,18 +62,17 @@
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				9D785E5F04B570C0ED5518F1 /* libPods-domofon.a */,
+				1848FDF3E5E76BAF962DF922 /* libPods-domofon.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		3978F988EDF7ED2A2CE3153B /* Pods */ = {
+		769EE17146208F72117A6857 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				7B058CB3148DCF87D570D2A0 /* Pods-domofon.debug.xcconfig */,
-				31DB7F69DE74509ED51E4557 /* Pods-domofon.release.xcconfig */,
+				F4BFA0FEBD5E96F9A6CBF630 /* Pods-domofon.debug.xcconfig */,
+				0930F716F3CFAC2782478A00 /* Pods-domofon.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -99,8 +90,8 @@
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
-				3978F988EDF7ED2A2CE3153B /* Pods */,
-				044BB97C30AC52E0465F84F4 /* ExpoModulesProviders */,
+				769EE17146208F72117A6857 /* Pods */,
+				8622C633D37D1E6DD5FA5809 /* ExpoModulesProviders */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -115,6 +106,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		8622C633D37D1E6DD5FA5809 /* ExpoModulesProviders */ = {
+			isa = PBXGroup;
+			children = (
+				E5969E436873AEB87A1A0E9E /* domofon */,
+			);
+			name = ExpoModulesProviders;
+			sourceTree = "<group>";
+		};
 		BB2F792B24A3F905000567C9 /* Supporting */ = {
 			isa = PBXGroup;
 			children = (
@@ -124,10 +123,10 @@
 			path = domofon/Supporting;
 			sourceTree = "<group>";
 		};
-		D60EB50469B6E3E821F2D9E7 /* domofon */ = {
+		E5969E436873AEB87A1A0E9E /* domofon */ = {
 			isa = PBXGroup;
 			children = (
-				3ECACD3CFE822D2F616DC8A4 /* ExpoModulesProvider.swift */,
+				A8314DFB7EF093DCC86F56C8 /* ExpoModulesProvider.swift */,
 			);
 			name = domofon;
 			sourceTree = "<group>";
@@ -140,13 +139,13 @@
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "domofon" */;
 			buildPhases = (
 				08A4A3CD28434E44B6B9DE2E /* [CP] Check Pods Manifest.lock */,
-				4B7260635E9B03A8891C945A /* [Expo] Configure project */,
+				24520FD971D03EA62D590953 /* [Expo] Configure project */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				800E24972A6A228C8D4807E9 /* [CP] Copy Pods Resources */,
-				30DC7711DA9BFEEDB2E1A8AD /* [CP] Embed Pods Frameworks */,
+				89DE6CCCD2FB600672EBFDA2 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -196,7 +195,7 @@
 				BB2F792D24A3F905000567C9 /* Expo.plist in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */,
-				7D3463585BE98C7D9814B8A2 /* PrivacyInfo.xcprivacy in Resources */,
+				2F149E8DDA196F1962D10600 /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -240,27 +239,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		30DC7711DA9BFEEDB2E1A8AD /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-domofon/Pods-domofon-frameworks.sh",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/JitsiWebRTC/WebRTC.framework/WebRTC",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/hermes-engine/Pre-built/hermes.framework/hermes",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/WebRTC.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/hermes.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-domofon/Pods-domofon-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		4B7260635E9B03A8891C945A /* [Expo] Configure project */ = {
+		24520FD971D03EA62D590953 /* [Expo] Configure project */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
@@ -321,6 +300,26 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-domofon/Pods-domofon-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		89DE6CCCD2FB600672EBFDA2 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-domofon/Pods-domofon-frameworks.sh",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/JitsiWebRTC/WebRTC.framework/WebRTC",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/hermes-engine/Pre-built/hermes.framework/hermes",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/WebRTC.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/hermes.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-domofon/Pods-domofon-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -329,7 +328,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F11748422D0307B40044C1D9 /* AppDelegate.swift in Sources */,
-				29F050073DD79478F9F1BD17 /* ExpoModulesProvider.swift in Sources */,
+				AAB1C2ECBD0BE50C40DCFA11 /* ExpoModulesProvider.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -338,12 +337,17 @@
 /* Begin XCBuildConfiguration section */
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7B058CB3148DCF87D570D2A0 /* Pods-domofon.debug.xcconfig */;
+			baseConfigurationReference = F4BFA0FEBD5E96F9A6CBF630 /* Pods-domofon.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = domofon/domofon.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = DGUNQP88RJ;
 				ENABLE_BITCODE = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
@@ -364,6 +368,8 @@
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.rasult22.domofon;
 				PRODUCT_NAME = domofon;
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "domofon-dev-profile";
 				SWIFT_OBJC_BRIDGING_HEADER = "domofon/domofon-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -374,12 +380,17 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 31DB7F69DE74509ED51E4557 /* Pods-domofon.release.xcconfig */;
+			baseConfigurationReference = 0930F716F3CFAC2782478A00 /* Pods-domofon.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = domofon/domofon.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = DGUNQP88RJ;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = domofon/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
@@ -396,6 +407,8 @@
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
 				PRODUCT_BUNDLE_IDENTIFIER = com.rasult22.domofon;
 				PRODUCT_NAME = domofon;
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "domofon-dev-profile";
 				SWIFT_OBJC_BRIDGING_HEADER = "domofon/domofon-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -459,10 +472,7 @@
 				LIBRARY_SEARCH_PATHS = "$(SDKROOT)/usr/lib/swift\"$(inherited)\"";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DEBUG";
@@ -518,10 +528,7 @@
 				);
 				LIBRARY_SEARCH_PATHS = "$(SDKROOT)/usr/lib/swift\"$(inherited)\"";
 				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = true;
