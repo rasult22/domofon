@@ -2,7 +2,6 @@ import PocketBase from 'pocketbase';
 import InCallManager from 'react-native-incall-manager';
 import {
   mediaDevices,
-  MediaStream,
   RTCIceCandidate,
   RTCPeerConnection,
   RTCSessionDescription
@@ -47,14 +46,17 @@ export const acceptCall = async (callId: string) => {
   });
 
   // Setup remote stream
-  const remoteStream = new MediaStream();
+  // const remoteStream = new MediaStream();
   InCallManager.start();
   
   pc.addEventListener('track', (event) => {
-    event.streams[0]?.getTracks().forEach(track => {
-      console.log(track, 'track')
-      remoteStream.addTrack(track);
-    });
+    // event.streams[0]?.getTracks().forEach(track => {
+    //   console.log(track, 'track')
+    //   remoteStream.addTrack(track);
+    // });
+    if (event.streams && event.streams[0]) {
+      InCallManager.setForceSpeakerphoneOn(false);
+    }
 
     // TODO: pass remoteStream to your app’s audio playback logic
     // e.g., setRemoteStream(remoteStream) in your state
@@ -102,6 +104,6 @@ export const acceptCall = async (callId: string) => {
   return {
     peerConnection: pc,
     localStream,
-    remoteStream,
+    // remoteStream,
   };
 };
