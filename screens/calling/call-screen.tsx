@@ -5,6 +5,7 @@ import { acceptCall } from "@/webrtc/accept-call";
 import { Home, Mic, MicOff, PhoneOff, Unlock } from "lucide-react-native";
 import React, { useEffect, useState } from "react";
 import { StatusBar, Text, TouchableOpacity, View } from "react-native";
+import inCallManager from "react-native-incall-manager";
 import Animated, {
   LinearTransition,
   useAnimatedStyle,
@@ -12,6 +13,7 @@ import Animated, {
   withSequence,
   withTiming,
 } from "react-native-reanimated";
+import { RTCPeerConnection } from 'react-native-webrtc';
 import { CallDeclined } from "./call-declined";
 import { GettingCall } from "./getting-call";
 
@@ -19,6 +21,7 @@ export default function IntercomCallScreen() {
   
   const {data} = useCalls()
   useCallsSubscription()
+  const [pc, setPc] = useState<RTCPeerConnection>()
   // ui states
   const [call, setCall] = useState<{
     id: string;
@@ -46,6 +49,7 @@ export default function IntercomCallScreen() {
       console.log('got i new call here it is:', call)
       if (call) {
         setCallStatus('incoming')
+        inCallManager.startRingtone('_DEFAULT_', 10, '_DEFAULT_', 60)
         setCall(call)
       }
     }
@@ -72,15 +76,19 @@ export default function IntercomCallScreen() {
     return `${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
   };
 
-  const handleAccept = () => {
+  const handleAccept = async () => {
     buttonScale.value = withSequence(
       withTiming(0.9, { duration: 100 }),
       withTiming(1, { duration: 100 })
     );
     setCallStatus("accepted");
+    inCallManager.stopRingtone()
     setCallDuration(0);
     if (call) {
-      acceptCall(call.id)
+      const data = await acceptCall(call.id)
+      if (data.peerConnection) {
+        setPc(data.peerConnection)
+      }
     }
   };
 
@@ -97,10 +105,18 @@ export default function IntercomCallScreen() {
 
   const handleEndCall = () => {
     setCallStatus("declined");
+    inCallManager.stop()
+    if (call) {
+      pb.collection('calls').delete(call.id)
+    }
+    if (pc) {
+      pc.close();
+    }
   };
 
   const toggleMute = () => {
     setIsMuted(!isMuted);
+    inCallManager.setMicrophoneMute(!isMuted)
   };
 
   const handleOpenDoor = () => {
