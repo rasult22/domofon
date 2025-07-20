@@ -97,7 +97,9 @@ export default function IntercomCallScreen() {
       withTiming(0.9, { duration: 100 }),
       withTiming(1, { duration: 100 })
     );
+    
     setCallStatus("declined");
+    inCallManager.stopRingtone()
     if (call) {
       pb.collection('calls').delete(call.id)
     }
