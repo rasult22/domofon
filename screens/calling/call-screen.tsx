@@ -13,15 +13,18 @@ import Animated, {
   withSequence,
   withTiming,
 } from "react-native-reanimated";
-import { RTCPeerConnection } from 'react-native-webrtc';
+import { MediaStream, RTCPeerConnection } from 'react-native-webrtc';
 import { CallDeclined } from "./call-declined";
 import { GettingCall } from "./getting-call";
+import VideoCall from "./video-call";
 
 export default function IntercomCallScreen() {
   
   const {data} = useCalls()
   useCallsSubscription()
   const [pc, setPc] = useState<RTCPeerConnection>()
+  const [localStream, setLocalStream] = useState<MediaStream>()
+  const [remoteStream, setRemoteStream] = useState<MediaStream>()
   // ui states
   const [call, setCall] = useState<{
     id: string;
@@ -88,6 +91,12 @@ export default function IntercomCallScreen() {
       const data = await acceptCall(call.id)
       if (data.peerConnection) {
         setPc(data.peerConnection)
+      }
+      if (data.localStream) {
+        setLocalStream(data.localStream)
+      }
+      if (data.remoteStream) {
+        setRemoteStream(data.remoteStream)
       }
     }
   };
@@ -163,6 +172,10 @@ export default function IntercomCallScreen() {
         }}
       />
     );
+  }
+
+  if (remoteStream || localStream) {
+    return <VideoCall onEndCall={handleEndCall} remoteStream={remoteStream} localStream={localStream} />
   }
 
   return (
