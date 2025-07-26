@@ -1,9 +1,10 @@
-import { Mic, MicOff, PhoneOff, Video, VideoOff } from "lucide-react-native";
+import { Mic, MicOff, PhoneOff, Video, VideoOff, Unlock } from "lucide-react-native";
 import React, { useEffect, useState } from "react";
 import { StatusBar, Text, TouchableOpacity, View } from "react-native";
 import inCallManager from "react-native-incall-manager";
 import Animated, {
   LinearTransition,
+  useAnimatedStyle,
   useSharedValue,
   withSequence,
   withTiming
@@ -21,9 +22,11 @@ export default function VideoCall({ remoteStream, localStream, onEndCall }: Vide
   const [isMuted, setIsMuted] = useState(false);
   const [isVideoEnabled, setIsVideoEnabled] = useState(true);
   const [callDuration, setCallDuration] = useState(0);
+  const [isDoorOpened, setIsDoorOpened] = useState(false);
 
   // Reanimated values
   const buttonScale = useSharedValue(1);
+  const doorButtonScale = useSharedValue(1);
 
   useEffect(() => {
     // Call duration timer
@@ -74,6 +77,27 @@ export default function VideoCall({ remoteStream, localStream, onEndCall }: Vide
       track.enabled = !isVideoEnabled;
     });
   };
+
+  const handleOpenDoor = () => {
+    doorButtonScale.value = withSequence(
+      withTiming(0.9, { duration: 100 }),
+      withTiming(1.1, { duration: 150 }),
+      withTiming(1, { duration: 100 })
+    );
+    setIsDoorOpened(true);
+
+    // Reset door status after 3 seconds
+    setTimeout(() => {
+      setIsDoorOpened(false);
+    }, 3000);
+  };
+
+  // Animated styles
+  const doorButtonAnimatedStyle = useAnimatedStyle(() => {
+    return {
+      transform: [{ scale: doorButtonScale.value }],
+    };
+  });
 
   return (
     <View className="flex-1 bg-gray-900 w-full">
@@ -146,6 +170,16 @@ export default function VideoCall({ remoteStream, localStream, onEndCall }: Vide
             <Text className="text-green-400 text-sm ml-2">Соединен</Text>
           </View>
         </Animated.View>
+
+        {/* Door status indicator */}
+        {isDoorOpened && (
+          <View className="absolute top-32 left-1/2 transform -translate-x-1/2 z-10">
+            <View className="flex-row items-center bg-black bg-opacity-50 px-4 py-2 rounded-full">
+              <View className="w-3 h-3 bg-orange-500 rounded-full mr-2" />
+              <Text className="text-orange-400 text-sm">Дверь открыта</Text>
+            </View>
+          </View>
+        )}
       </View>
 
       {/* Call controls */}
@@ -154,7 +188,7 @@ export default function VideoCall({ remoteStream, localStream, onEndCall }: Vide
           {/* Call controls */}
           <View
             className="flex-row justify-center items-center pb-8"
-            style={{ columnGap: 32 }}
+            style={{ columnGap: 24 }}
           >
             {/* Mute button */}
             <TouchableOpacity
@@ -181,6 +215,29 @@ export default function VideoCall({ remoteStream, localStream, onEndCall }: Vide
                 <Video size={28} color="white" />
               )}
             </TouchableOpacity>
+
+            {/* Open Door button */}
+            <Animated.View
+              style={doorButtonAnimatedStyle}
+            >
+              <TouchableOpacity
+                className={`w-16 h-16 rounded-full items-center justify-center shadow-xl ${
+                  isDoorOpened ? "bg-orange-600" : "bg-blue-600"
+                }`}
+                onPress={handleOpenDoor}
+                activeOpacity={0.8}
+                disabled={isDoorOpened}
+                style={{
+                  shadowColor: isDoorOpened ? "#EA580C" : "#2563EB",
+                  shadowOffset: { width: 0, height: 4 },
+                  shadowOpacity: 0.3,
+                  shadowRadius: 8,
+                  elevation: 8,
+                }}
+              >
+                <Unlock size={28} color="white" />
+              </TouchableOpacity>
+            </Animated.View>
 
             {/* End call button */}
             <TouchableOpacity

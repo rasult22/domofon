@@ -52,7 +52,6 @@ export const acceptCall = async (callId: string) => {
   const remoteStream = new MediaStream()
 
   // Setup remote stream
-  // const remoteStream = new MediaStream();
   InCallManager.start({ media: 'video' });
   
   pc.addEventListener('track', (event) => {
