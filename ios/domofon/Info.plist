@@ -85,5 +85,10 @@
     <string>Automatic</string>
     <key>UIViewControllerBasedStatusBarAppearance</key>
     <false/>
+    <!-- Добавить в существующий Info.plist, найти или создать UIBackgroundModes -->
+    <key>UIBackgroundModes</key>
+    <array>
+      <string>voip</string>
+    </array>
   </dict>
 </plist>
