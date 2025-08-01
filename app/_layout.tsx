@@ -1,5 +1,7 @@
+import { initSimpleVoIP } from '@/services/simple-voip';
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Stack } from "expo-router";
+import { useEffect } from 'react';
 import { StatusBar, useColorScheme } from "react-native";
 import EventSource from "react-native-sse";
 import queryClient from '.././queries/client';
@@ -7,6 +9,11 @@ import '../global.css';
 
 export default function RootLayout() {
   const isDarkMode = useColorScheme() === "dark";
+  
+  useEffect(() => {
+    // Только инициализация VoIP для логирования
+    initSimpleVoIP();
+  }, []);
   if (!global.EventSource) {
     (EventSource as any).CONNECTING = 0;
     (EventSource as any).OPEN = 1;
