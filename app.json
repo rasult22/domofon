@@ -12,7 +12,13 @@
       "supportsTablet": true,
       "bitcode": false,
       "bundleIdentifier": "com.rasult22.domofon",
-      "appleTeamId": "DGUNQP88RJ"
+      "appleTeamId": "DGUNQP88RJ",
+      "infoPlist": {
+        "UIBackgroundModes":[
+          "voip",
+          "background-processing"
+        ]
+      }
     },
     "android": {
       "adaptiveIcon": {

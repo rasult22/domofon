@@ -1,4 +1,5 @@
 import { initSimpleVoIP } from '@/services/simple-voip';
+import { setupCallKeep } from '@/webrtc/setup-callkeep';
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Stack } from "expo-router";
 import { useEffect } from 'react';
@@ -12,6 +13,7 @@ export default function RootLayout() {
   
   useEffect(() => {
     // Только инициализация VoIP для логирования
+    setupCallKeep()
     initSimpleVoIP();
   }, []);
   if (!global.EventSource) {
