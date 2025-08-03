@@ -22,6 +22,14 @@ public class AppDelegate: ExpoAppDelegate, PKPushRegistryDelegate {
     reactNativeFactory = factory
     bindReactNativeFactory(factory)
 
+    // Setup CallKeep ASAP в нативном коде
+    RNCallKeep.setup([
+      "appName": "Domofon",
+      "maximumCallGroups": 1,
+      "maximumCallsPerCallGroup": 1,
+      "supportsVideo": true
+    ])
+
     // Register VoIP push notifications ASAP (recommended)
     RNVoipPushNotificationManager.voipRegistration()
 
@@ -65,18 +73,36 @@ public class AppDelegate: ExpoAppDelegate, PKPushRegistryDelegate {
   
   public func pushRegistry(_ registry: PKPushRegistry, didInvalidatePushTokenFor type: PKPushType) {
     // The system calls this method when a previously provided push token is no longer valid
-    // Use this method to notify your server not to send push notifications using the matching push token
   }
   
-  // Handle incoming pupublic shes
+  // Handle incoming pushes
   public func pushRegistry(_ registry: PKPushRegistry, didReceiveIncomingPushWith payload: PKPushPayload, for type: PKPushType, completion: @escaping () -> Void) {
-    // NOTE: Apple requires us to invoke CallKit ASAP when we receive VoIP push on iOS 13+
-    // You should integrate with react-native-callkeep for proper call handling
+    // КРИТИЧНО: Apple требует вызвать CallKit НЕМЕДЛЕННО для iOS 13+
     
-    // Process your VoIP push payload here
+    // Извлекаем данные из payload
+    let payloadDict = payload.dictionaryPayload
+    let uuid = payloadDict["uuid"] as? String ?? UUID().uuidString
+    let callerName = payloadDict["callerName"] as? String ?? "Домофон"
+    let handle = payloadDict["handle"] as? String ?? "Входящий звонок"
+    
+    // Вызываем CallKeep НЕМЕДЛЕННО
+    RNCallKeep.reportNewIncomingCall(
+      uuid,
+      handle: handle,
+      handleType: "generic",
+      hasVideo: true,
+      localizedCallerName: callerName,
+      supportsHolding: false,
+      supportsDTMF: false,
+      supportsGrouping: false,
+      supportsUngrouping: false,
+      fromPushKit: true,
+      payload: payloadDict,
+      withCompletionHandler: completion
+    )
+    
+    // Также передаем в React Native
     RNVoipPushNotificationManager.didReceiveIncomingPush(with: payload, forType: type.rawValue)
-    
-    completion()
   }
 }
 
