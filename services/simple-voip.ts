@@ -19,7 +19,6 @@ export const initSimpleVoIP = () => {
     console.log('🔔 Notification keys:', Object.keys(notification));
     
     // 🚨 КРИТИЧНО: Вызываем CallKeep НЕМЕДЛЕННО
-    const uuid2 = notification.uuid || `call-${Date.now()}`;
     const callerName = notification.callerName || 'Домофон';
     const handle = notification.handle || 'Входящий звонок';
     
