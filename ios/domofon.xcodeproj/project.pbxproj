@@ -14,6 +14,8 @@
 		BB2F792D24A3F905000567C9 /* Expo.plist in Resources */ = {isa = PBXBuildFile; fileRef = BB2F792C24A3F905000567C9 /* Expo.plist */; };
 		CDC834E4FCE11E7D9044FDA1 /* libPods-domofon.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A9AE22D5C685CAF19192DA7 /* libPods-domofon.a */; };
 		F11748422D0307B40044C1D9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11748412D0307B40044C1D9 /* AppDelegate.swift */; };
+		8AE31EF541D9424EAE13E838 /* CallKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF5E7B7B7DBD484FBC9F5761 /* CallKit.framework */; };
+		6A89B0CDE56E4AB8824168C8 /* Intents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 063B855FCEC84AF4925C4C50 /* Intents.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +32,8 @@
 		EFF3346EF2B8A0D2FAD49184 /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-domofon/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
 		F11748412D0307B40044C1D9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = domofon/AppDelegate.swift; sourceTree = "<group>"; };
 		F11748442D0722820044C1D9 /* domofon-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "domofon-Bridging-Header.h"; path = "domofon/domofon-Bridging-Header.h"; sourceTree = "<group>"; };
+		FF5E7B7B7DBD484FBC9F5761 /* CallKit.framework */ = {isa = PBXFileReference; name = "CallKit.framework"; path = "System/Library/Frameworks/CallKit.framework"; sourceTree = SDKROOT; fileEncoding = undefined; lastKnownFileType = wrapper.framework; explicitFileType = undefined; includeInIndex = 0; };
+		063B855FCEC84AF4925C4C50 /* Intents.framework */ = {isa = PBXFileReference; name = "Intents.framework"; path = "System/Library/Frameworks/Intents.framework"; sourceTree = SDKROOT; fileEncoding = undefined; lastKnownFileType = wrapper.framework; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -38,6 +42,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				CDC834E4FCE11E7D9044FDA1 /* libPods-domofon.a in Frameworks */,
+				8AE31EF541D9424EAE13E838 /* CallKit.framework in Frameworks */,
+				6A89B0CDE56E4AB8824168C8 /* Intents.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -79,6 +85,8 @@
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				9A9AE22D5C685CAF19192DA7 /* libPods-domofon.a */,
+				FF5E7B7B7DBD484FBC9F5761 /* CallKit.framework */,
+				063B855FCEC84AF4925C4C50 /* Intents.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -344,7 +352,7 @@
 				CODE_SIGN_ENTITLEMENTS = domofon/domofon.entitlements;
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = DGUNQP88RJ;
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = DGUNQP88RJ;
 				ENABLE_BITCODE = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -365,7 +373,7 @@
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.rasult22.domofon;
-				PRODUCT_NAME = domofon;
+				PRODUCT_NAME = "domofon";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "domofon-dev-profile";
 				SWIFT_OBJC_BRIDGING_HEADER = "domofon/domofon-Bridging-Header.h";
@@ -373,6 +381,10 @@
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../node_modules/react-native-callkeep/ios/RNCallKeep",
+				);
 			};
 			name = Debug;
 		};
@@ -385,7 +397,7 @@
 				CODE_SIGN_ENTITLEMENTS = domofon/domofon.entitlements;
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = DGUNQP88RJ;
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = DGUNQP88RJ;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = domofon/Info.plist;
@@ -402,13 +414,17 @@
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
 				PRODUCT_BUNDLE_IDENTIFIER = com.rasult22.domofon;
-				PRODUCT_NAME = domofon;
+				PRODUCT_NAME = "domofon";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "domofon-dev-profile";
 				SWIFT_OBJC_BRIDGING_HEADER = "domofon/domofon-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../node_modules/react-native-callkeep/ios/RNCallKeep",
+				);
 			};
 			name = Release;
 		};
