@@ -1,3 +1,4 @@
+import RNCallKeep from 'react-native-callkeep';
 import VoipPushNotification from 'react-native-voip-push-notification';
 
 export const initSimpleVoIP = () => {
@@ -16,6 +17,26 @@ export const initSimpleVoIP = () => {
     console.log('🔔 Raw notification:', notification);
     console.log('🔔 Stringified:', JSON.stringify(notification, null, 2));
     console.log('🔔 Notification keys:', Object.keys(notification));
+    
+    // 🚨 КРИТИЧНО: Вызываем CallKeep НЕМЕДЛЕННО
+    const uuid = notification.uuid || `call-${Date.now()}`;
+    const callerName = notification.callerName || 'Домофон';
+    const handle = notification.handle || 'Входящий звонок';
+    
+    console.log('📞 Calling RNCallKeep.displayIncomingCall with:', { uuid, handle, callerName });
+    
+    try {
+      RNCallKeep.displayIncomingCall(
+        uuid,
+        handle,
+        callerName,
+        'generic',
+        false // hasVideo
+      );
+      console.log('✅ CallKeep.displayIncomingCall успешно вызван');
+    } catch (error) {
+      console.error('❌ Ошибка при вызове CallKeep:', error);
+    }
   });
 
   // События, которые были получены до инициализации (включая кэшированный токен)
@@ -25,17 +46,11 @@ export const initSimpleVoIP = () => {
     if (events && events.length > 0) {
       events.forEach((event, index) => {
         console.log(`📦 Event ${index}:`, JSON.stringify(event, null, 2));
-        
         // Обрабатываем кэшированный токен
         if (event.name === 'RNVoipPushRemoteNotificationsRegisteredEvent' && event.data) {
           console.log('📱 VoIP Token received (cached):', event.data);
           console.log('📱 Cached token length:', event.data.length);
           // Отправляем кэшированный токен на бэк
-        }
-        
-        // Обрабатываем кэшированные уведомления
-        if (event.name === 'RNVoipPushRemoteNotificationReceivedEvent' && event.data) {
-          console.log('🔔 VoIP Push received (cached):', event.data);
         }
       });
     }
