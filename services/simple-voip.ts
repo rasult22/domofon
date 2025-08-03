@@ -1,5 +1,3 @@
-import RNCallKeep from 'react-native-callkeep';
-import uuid from 'react-native-uuid';
 import VoipPushNotification from 'react-native-voip-push-notification';
 export const initSimpleVoIP = () => {
   console.log('🔥 Initializing VoIP Push...');
@@ -18,24 +16,6 @@ export const initSimpleVoIP = () => {
     console.log('🔔 Stringified:', JSON.stringify(notification, null, 2));
     console.log('🔔 Notification keys:', Object.keys(notification));
     
-    // 🚨 КРИТИЧНО: Вызываем CallKeep НЕМЕДЛЕННО
-    const callerName = notification.callerName || 'Домофон';
-    const handle = notification.handle || 'Входящий звонок';
-    
-    console.log('📞 Calling RNCallKeep.displayIncomingCall with:', { uuid, handle, callerName });
-    
-    try {
-      RNCallKeep.displayIncomingCall(
-        uuid.v4(),
-        handle,
-        callerName,
-        'generic',
-        false // hasVideo
-      );
-      console.log('✅ CallKeep.displayIncomingCall успешно вызван');
-    } catch (error) {
-      console.error('❌ Ошибка при вызове CallKeep:', error);
-    }
   });
 
   // События, которые были получены до инициализации (включая кэшированный токен)
