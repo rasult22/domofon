@@ -46,6 +46,7 @@
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
+      ["@config-plugins/react-native-callkeep"],
       ["@config-plugins/react-native-webrtc", 
     {
       "cameraPermission": "Allow domofon to access your camera for video calls",
