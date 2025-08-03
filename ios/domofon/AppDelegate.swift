@@ -2,7 +2,6 @@ import Expo
 import React
 import ReactAppDependencyProvider
 import PushKit
-import RNCallKeep
 
 @UIApplicationMain
 public class AppDelegate: ExpoAppDelegate, PKPushRegistryDelegate {
