@@ -24,7 +24,20 @@ const options: IOptions = {
 // Initialize CallKeep
 export const setupCallKeep = async () => {
   try {
-    const accepted = await RNCallKeep.setup(options);
+    const accepted = await RNCallKeep.setup({
+      ios: { appName: 'My app name' },
+      android: {
+        alertTitle: 'Permissions Required',
+        alertDescription: 'This app needs access to manage calls',
+        cancelButton: 'Cancel',
+        okButton: 'Allow',
+        additionalPermissions: [
+          'android.permission.READ_PHONE_STATE',
+          'android.permission.RECORD_AUDIO'
+        ],
+        selfManaged: false,
+      }
+    });
     console.log('CallKeep setup:', accepted);
     return accepted;
   } catch (error) {
