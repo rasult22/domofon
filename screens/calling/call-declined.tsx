@@ -1,7 +1,7 @@
 import { Home } from "lucide-react-native";
 import { Pressable, StatusBar, Text, View } from "react-native";
 import RNCallKeep from "react-native-callkeep";
-
+import uuid from 'react-native-uuid';
 export function CallDeclined({startNewCall}: {startNewCall: () => void}) {
   return (
      <View className="flex-1 bg-gray-900 w-full justify-center items-center px-8">
@@ -15,7 +15,7 @@ export function CallDeclined({startNewCall}: {startNewCall: () => void}) {
            Домофон закрыт
          </Text>
          <Pressable onPress={() => {
-          RNCallKeep.displayIncomingCall('test-123', 'test call', 'test caller', 'generic', false)
+          RNCallKeep.displayIncomingCall(uuid.v4(), 'test call', 'test caller', 'generic', false)
          }}>
           <Text>Test</Text>
          </Pressable>
