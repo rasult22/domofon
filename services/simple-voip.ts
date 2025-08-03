@@ -1,6 +1,6 @@
 import RNCallKeep from 'react-native-callkeep';
+import uuid from 'react-native-uuid';
 import VoipPushNotification from 'react-native-voip-push-notification';
-
 export const initSimpleVoIP = () => {
   console.log('🔥 Initializing VoIP Push...');
   
@@ -19,7 +19,7 @@ export const initSimpleVoIP = () => {
     console.log('🔔 Notification keys:', Object.keys(notification));
     
     // 🚨 КРИТИЧНО: Вызываем CallKeep НЕМЕДЛЕННО
-    const uuid = notification.uuid || `call-${Date.now()}`;
+    const uuid2 = notification.uuid || `call-${Date.now()}`;
     const callerName = notification.callerName || 'Домофон';
     const handle = notification.handle || 'Входящий звонок';
     
@@ -27,7 +27,7 @@ export const initSimpleVoIP = () => {
     
     try {
       RNCallKeep.displayIncomingCall(
-        uuid,
+        uuid.v4(),
         handle,
         callerName,
         'generic',
