@@ -16,6 +16,7 @@ export default function RootLayout() {
     setupCallKeep()
     initSimpleVoIP();
   }, []);
+  
   if (!global.EventSource) {
     (EventSource as any).CONNECTING = 0;
     (EventSource as any).OPEN = 1;
@@ -25,16 +26,17 @@ export default function RootLayout() {
 
   return (
     <>
-    <QueryClientProvider client={queryClient}>
-      <StatusBar barStyle={isDarkMode ? "light-content" : "dark-content"} />
-      <Stack screenOptions={{
-        contentStyle: {
-          backgroundColor: '#000'
-        }
-      }}>
-        <Stack.Screen name="index" options={{ headerShown: false }} />
-      </Stack>
-    </QueryClientProvider>
+      <QueryClientProvider client={queryClient}>
+        <StatusBar barStyle={isDarkMode ? "light-content" : "dark-content"} />
+        <Stack screenOptions={{
+          contentStyle: {
+            backgroundColor: '#000'
+          }
+        }}>
+          <Stack.Screen name="(protected)" options={{ headerShown: false }} />
+          <Stack.Screen name="sign-in" options={{ headerShown: false }} />
+        </Stack>
+      </QueryClientProvider>
     </>
   );
 }

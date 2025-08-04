@@ -11,6 +11,7 @@
     "ios": {
       "supportsTablet": true,
       "bitcode": false,
+      "usesAppleSignIn": true,
       "bundleIdentifier": "com.rasult22.domofon",
       "appleTeamId": "DGUNQP88RJ",
       "infoPlist": {
@@ -46,6 +47,7 @@
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
+      ["expo-apple-authentication"],
       ["@config-plugins/react-native-callkeep"],
       ["@config-plugins/react-native-webrtc", 
     {
