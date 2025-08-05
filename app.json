@@ -47,7 +47,6 @@
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
-      ["expo-apple-authentication"],
       ["@config-plugins/react-native-callkeep"],
       ["@config-plugins/react-native-webrtc", 
     {

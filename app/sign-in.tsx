@@ -1,6 +1,6 @@
 import AppleIcon from "@/components/AppleIcon";
 import { useAppleSignIn } from "@/queries/auth";
-import * as AppleAuthentication from 'expo-apple-authentication';
+import { appleAuth } from '@invertase/react-native-apple-authentication';
 import { router } from "expo-router";
 import React, { useEffect } from "react";
 import { Alert, StatusBar, Text, TouchableOpacity, View } from "react-native";
@@ -61,12 +61,10 @@ export default function SignInScreen() {
         withTiming(0.95, { duration: 100 }),
         withTiming(1, { duration: 100 })
       );
-
-      const credential = await AppleAuthentication.signInAsync({
-        requestedScopes: [
-          AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
-          AppleAuthentication.AppleAuthenticationScope.EMAIL,
-        ],
+     
+      const credential = await appleAuth.performRequest({
+        'requestedOperation': appleAuth.Operation.LOGIN,
+        'requestedScopes': [appleAuth.Scope.FULL_NAME, appleAuth.Scope.EMAIL]
       });
 
       // Handle successful sign in
