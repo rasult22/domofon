@@ -1,3 +1,4 @@
+import { AppleRequestResponse } from '@invertase/react-native-apple-authentication';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { pb } from "./client";
@@ -34,13 +35,13 @@ export const useAppleSignIn = () => {
   const queryClient = useQueryClient();
   
   return useMutation({
-    mutationFn: async (appleCredential: any) => {
+    mutationFn: async (appleCredential: AppleRequestResponse) => {
       try {
         // Use PocketBase Apple OAuth
         const authData = await pb.collection('users').authWithOAuth2Code(
           'apple',
-          appleCredential.authorizationCode,
-          appleCredential.identityToken,
+          appleCredential.authorizationCode || '',
+          appleCredential.identityToken || '',
           `${pb.baseURL}/api/oauth2-redirect`
         );
         console.log(authData)
