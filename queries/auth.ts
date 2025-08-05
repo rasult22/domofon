@@ -41,7 +41,7 @@ export const useAppleSignIn = () => {
           'apple',
           appleCredential.authorizationCode,
           appleCredential.identityToken,
-          'https://yourapp.com/auth/apple/callback' // your redirect URI
+          `${pb.baseURL}/api/oauth2-redirect`
         );
         console.log(authData)
         
