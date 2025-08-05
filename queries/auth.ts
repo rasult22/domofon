@@ -16,6 +16,12 @@ export const useAuth = () => useQuery({
       
       // Try to get stored auth data
       const storedAuth = await AsyncStorage.getItem(AUTH_STORAGE_KEY);
+      
+      // debugging
+      // setTimeout(() => {
+      //   AsyncStorage.removeItem(AUTH_STORAGE_KEY)
+      // }, 4000)
+      
       if (storedAuth) {
         const authData = JSON.parse(storedAuth);
         pb.authStore.save(authData.token, authData.record);

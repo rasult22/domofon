@@ -1,6 +1,5 @@
 import AppleIcon from "@/components/AppleIcon";
 import { useAppleSignIn } from "@/queries/auth";
-import { supabase } from "@/services/supabase";
 import { appleAuth } from "@invertase/react-native-apple-authentication";
 import { router } from "expo-router";
 import React, { useEffect } from "react";
@@ -69,29 +68,11 @@ export default function SignInScreen() {
       });
 
       // Handle successful sign in
-      console.log("Apple Sign In Success:", credential);
-      // Sign in via Supabase Auth.
-      if (credential.identityToken) {
-        const {
-          error,
-          data: { user },
-        } = await supabase.auth.signInWithIdToken({
-          provider: "apple",
-          token: credential.identityToken,
-        });
-        console.log(JSON.stringify({ error, user }, null, 2));
-        if (!error) {
-          // User is signed in.
-          console.log('we got it')
-        }
-      } else {
-        throw new Error("No identityToken.");
-      }
 
-      // await appleSignInMutation.mutateAsync(credential);
+      await appleSignInMutation.mutateAsync(credential);
 
       // Navigate to protected area
-      router.replace("/(protected)/index");
+      router.replace('/(protected)');
     } catch (error: any) {
       if (error.code === "ERR_REQUEST_CANCELED") {
         // User canceled the sign-in flow
