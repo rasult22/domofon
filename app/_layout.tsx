@@ -1,5 +1,5 @@
+import { setupCallKeep } from '@/services/setup-callkeep';
 import { initSimpleVoIP } from '@/services/simple-voip';
-import { setupCallKeep } from '@/webrtc/setup-callkeep';
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Stack } from "expo-router";
 import { useEffect } from 'react';
