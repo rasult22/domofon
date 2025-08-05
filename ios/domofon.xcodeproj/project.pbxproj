@@ -379,7 +379,7 @@
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.rasult22.domofon;
-				PRODUCT_NAME = domofon;
+				PRODUCT_NAME = "domofon";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "domofon-dev-profile";
 				SWIFT_OBJC_BRIDGING_HEADER = "domofon/domofon-Bridging-Header.h";
@@ -420,7 +420,7 @@
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
 				PRODUCT_BUNDLE_IDENTIFIER = com.rasult22.domofon;
-				PRODUCT_NAME = domofon;
+				PRODUCT_NAME = "domofon";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "domofon-dev-profile";
 				SWIFT_OBJC_BRIDGING_HEADER = "domofon/domofon-Bridging-Header.h";

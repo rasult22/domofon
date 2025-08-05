@@ -4,7 +4,7 @@ require 'openssl'
 # Your Apple Developer information
 TEAM_ID = "DGUNQP88RJ"           # 10-character Team ID from Apple Developer
 KEY_ID = "9P4JZ87787"             # 10-character Key ID from the p8 file name
-CLIENT_ID = "com.result22.domofon"  # Your Service ID (Bundle ID)
+CLIENT_ID = "com.rasult22.domofon"  # Your Service ID (Bundle ID)
 
 # Path to your p8 private key file
 PRIVATE_KEY_PATH = "./AuthKey_9P4JZ87787.p8"
