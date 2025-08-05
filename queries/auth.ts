@@ -41,7 +41,7 @@ export const useAppleSignIn = () => {
           'apple',
           appleCredential.authorizationCode,
           appleCredential.identityToken,
-          `${pb.baseURL}/api/oauth2-redirect`
+          `https://rasult22.pockethost.io/api/oauth2-redirect`
         );
         console.log(authData)
         
