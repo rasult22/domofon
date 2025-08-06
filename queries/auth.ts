@@ -37,6 +37,68 @@ export const useAuth = () => useQuery({
   retry: false,
 });
 
+// Новый хук для проверки привязанной квартиры
+export const useUserApartment = () => useQuery({
+  queryKey: ['user-apartment'],
+  queryFn: async () => {
+    try {
+      if (!pb.authStore.isValid) {
+        return null;
+      }
+
+      // TODO: Заменить на реальный запрос к коллекции user_apartments
+      // const apartment = await pb.collection('user_apartments').getFirstListItem(
+      //   `user_id="${pb.authStore.record?.id}"`
+      // );
+      
+      // Временная заглушка - возвращаем null, чтобы всегда показывать страницу настройки
+      return null;
+    } catch (error) {
+      console.error('User apartment error:', error);
+      return null;
+    }
+  },
+  enabled: !!pb.authStore.isValid,
+  retry: false,
+});
+
+// Хук для привязки квартиры
+export const useSetupApartment = () => {
+  const queryClient = useQueryClient();
+  
+  return useMutation({
+    mutationFn: async (apartmentCode: string) => {
+      try {
+        if (!pb.authStore.isValid) {
+          throw new Error('User not authenticated');
+        }
+
+        // TODO: Заменить на реальный запрос к API
+        // const apartment = await pb.collection('user_apartments').create({
+        //   user_id: pb.authStore.record?.id,
+        //   apartment_code: apartmentCode,
+        // });
+        
+        // Временная заглушка
+        const apartment = {
+          id: 'temp-id',
+          user_id: pb.authStore.record?.id,
+          apartment_code: apartmentCode,
+          created: new Date().toISOString(),
+        };
+        
+        return apartment;
+      } catch (error) {
+        console.error('Setup apartment error:', error);
+        throw error;
+      }
+    },
+    onSuccess: (data) => {
+      queryClient.setQueryData(['user-apartment'], data);
+    },
+  });
+};
+
 export const useAppleSignIn = () => {
   const queryClient = useQueryClient();
   
@@ -80,6 +142,7 @@ export const useSignOut = () => {
     },
     onSuccess: () => {
       queryClient.setQueryData(['auth'], null);
+      queryClient.setQueryData(['user-apartment'], null);
     },
   });
 };
