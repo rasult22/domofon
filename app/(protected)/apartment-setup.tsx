@@ -14,6 +14,7 @@ import {
   View,
 } from "react-native";
 import Animated, {
+  LinearTransition,
   useAnimatedStyle,
   useSharedValue,
   withSequence,
@@ -90,27 +91,39 @@ export default function ApartmentSetupScreen() {
         keyboardShouldPersistTaps="handled"
         showsVerticalScrollIndicator={false}
       >
-        {/* Main content */}
-        <View className="flex-1 justify-center items-center px-8 py-8">
+        {/* Main content with layout animation */}
+        <Animated.View 
+          layout={LinearTransition.duration(400).springify()}
+          className="flex-1 justify-center items-center px-8 py-8"
+        >
           {/* Icon */}
-          <View className="mb-8">
+          <Animated.View 
+            layout={LinearTransition.duration(300)}
+            className="mb-8"
+          >
             <View className="w-20 h-20 bg-blue-600 bg-opacity-20 rounded-full items-center justify-center">
-              <Home size={40} color="#3B82F6" />
+              <Home size={40} color="white" />
             </View>
-          </View>
+          </Animated.View>
 
           {/* Title and description */}
-          <View className="mb-12 px-4">
+          <Animated.View 
+            layout={LinearTransition.duration(300)}
+            className="mb-12 px-4"
+          >
             <Text className="text-white text-2xl font-bold text-center mb-4">
               Настройка квартиры
             </Text>
             <Text className="text-gray-400 text-base text-center leading-6">
               Введите код вашей квартиры, чтобы начать принимать звонки с домофона
             </Text>
-          </View>
+          </Animated.View>
 
           {/* Input field */}
-          <View className="w-full max-w-sm mb-8">
+          <Animated.View 
+            layout={LinearTransition.duration(300)}
+            className="w-full max-w-sm mb-8"
+          >
             <View className="mb-3">
               <Text className="text-gray-300 text-sm font-medium mb-2">
                 Код квартиры
@@ -136,10 +149,14 @@ export default function ApartmentSetupScreen() {
             <Text className="text-gray-500 text-xs leading-4">
               Код предоставляется управляющей компанией при регистрации в системе
             </Text>
-          </View>
+          </Animated.View>
 
           {/* Submit button */}
-          <Animated.View style={buttonAnimatedStyle} className="w-full max-w-sm mb-8">
+          <Animated.View 
+            style={buttonAnimatedStyle}
+            layout={LinearTransition.duration(300)}
+            className="w-full max-w-sm mb-8"
+          >
             <TouchableOpacity
               className={`w-full h-14 rounded-xl flex-row items-center justify-center ${
                 setupApartmentMutation.isPending
@@ -160,23 +177,29 @@ export default function ApartmentSetupScreen() {
           </Animated.View>
 
           {/* Help text */}
-          <View className="px-4">
+          <Animated.View 
+            layout={LinearTransition.duration(300)}
+            className="px-4"
+          >
             <Text className="text-gray-500 text-sm text-center leading-5">
               Если у вас нет кода квартиры, обратитесь к управляющей компании или
               администратору ЖК
             </Text>
-          </View>
-        </View>
+          </Animated.View>
+        </Animated.View>
 
         {/* Footer */}
-        <View className="pb-8 px-8">
+        <Animated.View 
+          layout={LinearTransition.duration(300)}
+          className="pb-8 px-8"
+        >
           <View className="bg-gray-800 bg-opacity-60 rounded-2xl p-4">
             <Text className="text-gray-400 text-xs text-center leading-5">
               Код квартиры используется для идентификации вашего жилья в системе
               домофона
             </Text>
           </View>
-        </View>
+        </Animated.View>
       </ScrollView>
     </KeyboardAvoidingView>
   );
