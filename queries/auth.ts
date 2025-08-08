@@ -25,7 +25,27 @@ export const useAuth = () => useQuery({
       if (storedAuth) {
         const authData = JSON.parse(storedAuth);
         pb.authStore.save(authData.token, authData.record);
-        return authData.record;
+        
+        try {
+          // Try to refresh the token
+          await pb.collection('users').authRefresh();
+          
+          // Update stored auth with new token
+          await AsyncStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify({
+            token: pb.authStore.token,
+            record: pb.authStore.record
+          }));
+          
+          return pb.authStore.record;
+        } catch (refreshError) {
+          console.error('Auth refresh failed:', refreshError);
+          
+          // If refresh fails (401), clear invalid auth data
+          pb.authStore.clear();
+          await AsyncStorage.removeItem(AUTH_STORAGE_KEY);
+          
+          return null;
+        }
       }
       
       return null;
@@ -47,12 +67,12 @@ export const useUserApartment = () => useQuery({
       }
 
       // TODO: Заменить на реальный запрос к коллекции user_apartments
-      // const apartment = await pb.collection('user_apartments').getFirstListItem(
-      //   `user_id="${pb.authStore.record?.id}"`
-      // );
+      const apartment = await pb.collection('apartments').getFirstListItem(
+        `user="${pb.authStore.record?.id}"`
+      );
       
       // Временная заглушка - возвращаем null, чтобы всегда показывать страницу настройки
-      return null;
+      return apartment;
     } catch (error) {
       console.error('User apartment error:', error);
       return null;
@@ -73,21 +93,25 @@ export const useSetupApartment = () => {
           throw new Error('User not authenticated');
         }
 
-        // TODO: Заменить на реальный запрос к API
-        // const apartment = await pb.collection('user_apartments').create({
-        //   user_id: pb.authStore.record?.id,
-        //   apartment_code: apartmentCode,
-        // });
+        let apartmentRecord = await pb.collection('apartments').getFirstListItem(
+          `apartment_code = "${apartmentCode}"`
+        );
+        console.log(apartmentRecord)
+        if (!apartmentRecord) {
+          throw new Error('Apartment not found');
+        }
+
+        // Проверка, что квартира не привязана к другому пользователю
+        if (apartmentRecord.user_id) {
+          throw new Error('Apartment already linked to another user');
+        }
+
+        // Привязываем квартиру к текущему пользователю
+        apartmentRecord = await pb.collection('apartments').update(apartmentRecord.id, {
+          user: pb.authStore.record?.id,
+        });
         
-        // Временная заглушка
-        const apartment = {
-          id: 'temp-id',
-          user_id: pb.authStore.record?.id,
-          apartment_code: apartmentCode,
-          created: new Date().toISOString(),
-        };
-        
-        return apartment;
+        return apartmentRecord;
       } catch (error) {
         console.error('Setup apartment error:', error);
         throw error;
