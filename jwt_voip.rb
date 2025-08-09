@@ -2,7 +2,7 @@ require 'jwt'
 require 'openssl'
 
 # PEM certificate path
-PEM_PATH = "./voip_certificate.pem"
+PEM_PATH = "./voip_cert.pem"
 
 # Apple Developer information
 TEAM_ID = "DGUNQP88RJ"
