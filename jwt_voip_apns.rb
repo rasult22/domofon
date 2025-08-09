@@ -5,7 +5,7 @@ require 'openssl'
 P8_KEY_PATH = "./AuthKey_9P4JZ87787.p8"  # Update this path
 
 # Apple Developer information (from your curl command)
-TEAM_ID = "DGVNQP88RJ"
+TEAM_ID = "DGUNQP88RJ"
 KEY_ID = "9P4JZ87787"
 
 # Read the private key from .p8 file
