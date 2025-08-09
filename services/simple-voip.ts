@@ -1,12 +1,29 @@
+import { checkAuth } from '@/queries/auth';
+import { pb } from '@/queries/client';
+import { Platform } from 'react-native';
 import VoipPushNotification from 'react-native-voip-push-notification';
 export const initSimpleVoIP = () => {
   console.log('🔥 Initializing VoIP Push...');
   
   // Получили токен (новая регистрация)
-  VoipPushNotification.addEventListener('register', (token) => {
+  VoipPushNotification.addEventListener('register', async (token) => {
     console.log('📱 VoIP Token received (new):', token);
     console.log('📱 Token length:', token.length);
-    // Отправляем токен на бэк
+    console.log('📱 auth store is valid:', pb.authStore.isValid);
+    if (!pb.authStore.isValid) {
+      const result = await checkAuth()
+      if (!result) return
+    }
+    const tokenFromPB = await pb.collection('voip_tokens').getFullList({
+      filter: `token='${token}'`
+    })
+    if (!tokenFromPB.length) {
+      pb.collection('voip_tokens').create({
+        type: Platform.OS,
+        token,
+        user_id: pb.authStore.record?.id
+      })
+    }
   });
 
   // Получили push уведомление
@@ -15,7 +32,6 @@ export const initSimpleVoIP = () => {
     console.log('🔔 Raw notification:', notification);
     console.log('🔔 Stringified:', JSON.stringify(notification, null, 2));
     console.log('🔔 Notification keys:', Object.keys(notification));
-    
   });
 
   // События, которые были получены до инициализации (включая кэшированный токен)

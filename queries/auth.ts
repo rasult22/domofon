@@ -8,7 +8,13 @@ const AUTH_STORAGE_KEY = 'domofon_auth';
 export const useAuth = () => useQuery({
   queryKey: ['auth'],
   queryFn: async () => {
-    try {
+    return checkAuth()
+  },
+  retry: false,
+});
+
+export const checkAuth = async  () => {
+  try {
       // Check if PocketBase has valid auth
       if (pb.authStore.isValid) {
         return pb.authStore.record;
@@ -53,9 +59,7 @@ export const useAuth = () => useQuery({
       console.error('Auth error:', error);
       return null;
     }
-  },
-  retry: false,
-});
+}
 
 // Новый хук для проверки привязанной квартиры
 export const useUserApartment = () => useQuery({

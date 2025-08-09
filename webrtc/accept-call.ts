@@ -15,10 +15,6 @@ const offerCandidates = pb.collection('offer_candidates');
 const answerCandidates = pb.collection('answer_candidates');
 
 export const acceptCall = async (callId: string) => {
-  // Authenticate
-  const auth = await pb
-  .collection('users')
-  .authWithPassword('webrtc_native', '12345678');
   
   // Get ICE servers
   const config = {
