@@ -6,7 +6,7 @@ PEM_PATH = "./voip_certificate.pem"
 
 # Apple Developer information
 TEAM_ID = "DGUNQP88RJ"
-KEY_ID = "VOIP_KEY_ID"
+KEY_ID = "9P4JZ87787"
 CLIENT_ID = "com.rasult22.domofon"
 
 # Read the private key from PEM file
