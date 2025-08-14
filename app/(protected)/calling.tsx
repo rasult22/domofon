@@ -6,11 +6,13 @@ import { useQuery } from "@tanstack/react-query";
 import { useLocalSearchParams } from "expo-router";
 import React, { useState } from "react";
 import { StatusBar, Text, View } from "react-native";
+import RNCallKeep from "react-native-callkeep";
 import inCallManager from "react-native-incall-manager";
 
 export default function IntercomCallScreen() {
   // get call id from url params
   const callId = useLocalSearchParams().call_id
+  const uuid = useLocalSearchParams().uuid
 
   const {data, isLoading} = useQuery({
     queryKey: ['calling', callId],
@@ -37,6 +39,9 @@ export default function IntercomCallScreen() {
       pb.collection('calls').update(callId as string, {
         status: 'ENDED'
       })
+    }
+    if (uuid) {
+      RNCallKeep.endCall(uuid as string)
     }
     if (data?.pc) {
       data?.pc.close?.();
