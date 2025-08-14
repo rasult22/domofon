@@ -1,7 +1,8 @@
-import { checkAuth } from '@/queries/auth';
 import { pb } from '@/queries/client';
+import { router } from 'expo-router';
 import { Platform } from 'react-native';
 import VoipPushNotification from 'react-native-voip-push-notification';
+
 export const initSimpleVoIP = () => {
   console.log('🔥 Initializing VoIP Push...');
   
@@ -10,10 +11,6 @@ export const initSimpleVoIP = () => {
     console.log('📱 VoIP Token received (new):', token);
     console.log('📱 Token length:', token.length);
     console.log('📱 auth store is valid:', pb.authStore.isValid);
-    if (!pb.authStore.isValid) {
-      const result = await checkAuth()
-      if (!result) return
-    }
     const tokenFromPB = await pb.collection('voip_tokens').getFullList({
       filter: `token='${token}'`
     })
@@ -32,6 +29,12 @@ export const initSimpleVoIP = () => {
     console.log('🔔 Raw notification:', notification);
     console.log('🔔 Stringified:', JSON.stringify(notification, null, 2));
     console.log('🔔 Notification keys:', Object.keys(notification));
+    const notificationData = notification as any
+    if (notificationData.aps) {
+      const payload = notificationData.aps.payload
+      console.log('notification payload',payload)
+      router.push(`/calling?uuid=${payload.uuid}&call_id=${payload.call_id}`)
+    }
   });
 
   // События, которые были получены до инициализации (включая кэшированный токен)
@@ -46,6 +49,10 @@ export const initSimpleVoIP = () => {
           console.log('📱 VoIP Token received (cached):', event.data);
           console.log('📱 Cached token length:', event.data.length);
           // Отправляем кэшированный токен на бэк
+        }
+        if (event.name === 'RNVoipPushRemoteNotificationReceivedEvent' && (event.data as any).aps) {
+          const payload = (event.data as { aps:{ payload: { uuid: string, call_id: string } }}).aps.payload
+          router.push(`/calling?uuid=${payload.uuid}&call_id=${payload.call_id}`)
         }
       });
     }

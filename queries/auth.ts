@@ -100,7 +100,6 @@ export const useSetupApartment = () => {
         let apartmentRecord = await pb.collection('apartments').getFirstListItem(
           `apartment_code = "${apartmentCode}"`
         );
-        console.log(apartmentRecord)
         if (!apartmentRecord) {
           throw new Error('Apartment not found');
         }
@@ -140,7 +139,6 @@ export const useAppleSignIn = () => {
           appleCredential.identityToken || '',
           `https://rasult22.pockethost.io/api/oauth2-redirect`
         );
-        console.log(authData)
         
         // Store auth data
         await AsyncStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify({

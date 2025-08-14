@@ -20,16 +20,15 @@ export const useCalls = () => useQuery({
       user_id: string,
       offer: any,
       answer: any,
-      receiver_id: string,
+      apartment_number: string,
       status: string
-    }>().then(data => data.filter(call => call.receiver_id === 'apmnu73db9u8wsa'));
+    }>().then(data => data.filter(call => (call.apartment_number === '42' && call.status === 'START')));
   }
 })
 
 export const useCallsSubscription = () => {
   useEffect(() => {
     const unsubscribe = pb.collection('calls').subscribe('*', async ({ action, record }) => {
-      console.log(action, record, 'got new event')
       queryClient.setQueryData(['calls'], (oldData: any[] = []) => {
         if (action === 'create') {
           return [...oldData, record];

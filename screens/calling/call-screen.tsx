@@ -31,7 +31,7 @@ export default function IntercomCallScreen() {
     user_id: string;
     offer: any;
     answer: any;
-    receiver_id: string;
+    apartment_number: string;
     status: string;
 }>()
   const [callStatus, setCallStatus] = useState("declined"); // incoming, accepted, declined
@@ -46,10 +46,8 @@ export default function IntercomCallScreen() {
   const doorButtonScale = useSharedValue(1);
 
   useEffect(() => {
-    console.log(data, 'calls')
     if (callStatus === 'declined' && data?.length) {
-      const call = data.find(c => c.status === 'pending')
-      console.log('got i new call here it is:', call)
+      const call = data.find(c => c.status === 'START')
       if (call) {
         setCallStatus('incoming')
         inCallManager.startRingtone('_DEFAULT_', 10, '_DEFAULT_', 60)
