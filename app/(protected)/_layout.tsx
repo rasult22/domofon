@@ -1,9 +1,18 @@
-import { useAuth } from "@/queries/auth";
 import LoadingFullScreen from "@/components/LoadingFullScreen";
+import { useAuth } from "@/queries/auth";
+import { setupCallKeep } from "@/services/setup-callkeep";
+import { initSimpleVoIP } from "@/services/simple-voip";
 import { Redirect, Stack } from "expo-router";
+import { useEffect } from "react";
 
 export default function ProtectedLayout() {
   const { data: user, isLoading } = useAuth();
+  useEffect(() => {
+    if (!isLoading && user?.id) {
+      setupCallKeep()
+      initSimpleVoIP();
+    }
+  }, [user, isLoading])
 
   if (isLoading) {
     return <LoadingFullScreen />;
