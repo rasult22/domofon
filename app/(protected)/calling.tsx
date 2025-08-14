@@ -1,4 +1,3 @@
-// import { WebRTCNativeClient } from "@/webrtc/native-client";
 import { pb } from "@/queries/client";
 import { CallDeclined } from "@/screens/calling/call-declined";
 import VideoCall from "@/screens/calling/video-call";
@@ -20,7 +19,6 @@ export default function IntercomCallScreen() {
         const data = await acceptCall(callId as string, (event) => {
         
         })
-
         return {
           pc: data.peerConnection,
           remoteStream: data.remoteStream,
