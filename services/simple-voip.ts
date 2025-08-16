@@ -1,4 +1,5 @@
 import { pb } from "@/queries/client";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from "expo-router";
 import { Platform } from "react-native";
 import RNCallKeep from "react-native-callkeep";
@@ -9,9 +10,9 @@ export const initSimpleVoIP = () => {
 
   // Получили токен (новая регистрация)
   VoipPushNotification.addEventListener("register", async (token) => {
-    console.log("📱 VoIP Token received (new):", token);
-    console.log("📱 Token length:", token.length);
-    console.log("📱 auth store is valid:", pb.authStore.isValid);
+    // console.log("📱 VoIP Token received (new):", token);
+    // console.log("📱 Token length:", token.length);
+    // console.log("📱 auth store is valid:", pb.authStore.isValid);
     const tokenFromPB = await pb.collection("voip_tokens").getFullList({
       filter: `token='${token}'`,
     });
@@ -24,42 +25,67 @@ export const initSimpleVoIP = () => {
     }
   });
 
-  // Получили push уведомление
-  VoipPushNotification.addEventListener("notification", (notification) => {
-    console.log("🔔 VoIP Push received:");
-    console.log("🔔 Raw notification:", notification);
-    console.log("🔔 Stringified:", JSON.stringify(notification, null, 2));
-    console.log("🔔 Notification keys:", Object.keys(notification));
-    const notificationData = notification as any;
-    if (notificationData.aps) {
-      const payload = notificationData.aps.payload;
-      console.log("notification payload", payload, notificationData);
-      if (notificationData.action === "call_start") {
+  RNCallKeep.addEventListener("answerCall", async (data) => {
+    const activeCalls = await RNCallKeep.getCalls();
+    const callInfo = await AsyncStorage.getItem("call_info");
+    if (callInfo) {
+      const callInfoJSON = JSON.parse(callInfo);
+      if (callInfoJSON.uuid === data.callUUID) {
+        console.log("CALL UUID MATCH", callInfo, data.callUUID);
         router.replace(
-          `/calling?uuid=${payload.uuid}&call_id=${payload.call_id}`
+          `/calling?uuid=${callInfoJSON.uuid}&call_id=${callInfoJSON.call_id}`
         );
-      }
-      if (notificationData.action === "end_call") {
-        RNCallKeep.endCall(payload.uuid);
-        router.replace("/");
       }
     }
   });
 
+  // Получили push уведомление
+  VoipPushNotification.addEventListener(
+    "notification",
+    async (notification) => {
+      // console.log("🔔 VoIP Push received:");
+      // console.log("🔔 Raw notification:", notification);
+      // console.log("🔔 Stringified:", JSON.stringify(notification, null, 2));
+      // console.log("🔔 Notification keys:", Object.keys(notification));
+      const notificationData = notification as any;
+      if (notificationData.aps) {
+        const payload = notificationData.aps.payload;
+        // console.log("notification payload", payload, notificationData);
+        if (notificationData.action === "call_start") {
+          await AsyncStorage.setItem(
+            "call_info",
+            JSON.stringify({
+              uuid: payload.uuid,
+              call_id: payload.call_id,
+            })
+          );
+          const activeCalls = await RNCallKeep.getCalls();
+          if (activeCalls && activeCalls.length) {
+            RNCallKeep.answerIncomingCall(payload.uuid);
+          }
+        }
+        if (notificationData.action === "end_call") {
+          RNCallKeep.endCall(payload.uuid);
+          router.replace("/");
+        }
+      }
+    }
+  );
+
   // События, которые были получены до инициализации (включая кэшированный токен)
-  VoipPushNotification.addEventListener("didLoadWithEvents", (events) => {
-    console.log("📦 VoIP events loaded:", events);
-    console.log("📦 Events count:", events?.length || 0);
+  VoipPushNotification.addEventListener("didLoadWithEvents", async (events) => {
+    // console.log("📦 VoIP events loaded:", events);
+    // console.log("📦 Events count:", events?.length || 0);
     if (events && events.length > 0) {
-      events.forEach((event, index) => {
-        console.log(`📦 Event ${index}:`, JSON.stringify(event, null, 2));
+      await events.forEach(async (event, index) => {
+        // console.log(`📦 Event ${index}:`, JSON.stringify(event, null, 2));
         // Обрабатываем кэшированный токен
         if (
           event.name === "RNVoipPushRemoteNotificationsRegisteredEvent" &&
           event.data
         ) {
-          console.log("📱 VoIP Token received (cached):", event.data);
-          console.log("📱 Cached token length:", event.data.length);
+          // console.log("📱 VoIP Token received (cached):", event.data);
+          // console.log("📱 Cached token length:", event.data.length);
           // Отправляем кэшированный токен на бэк
         }
         if (
@@ -78,11 +104,19 @@ export const initSimpleVoIP = () => {
               };
             };
           };
-          console.log(eventData, "eventData");
+          // console.log(eventData, "eventData");
           if (eventData.action === "call_start") {
-            router.replace(
-              `/calling?uuid=${eventData.uuid}&call_id=${eventData.call_id}`
+            await AsyncStorage.setItem(
+              "call_info",
+              JSON.stringify({
+                uuid: eventData.uuid,
+                call_id: eventData.call_id,
+              })
             );
+            const activeCalls = await RNCallKeep.getCalls();
+            if (activeCalls && activeCalls.length) {
+              RNCallKeep.answerIncomingCall(eventData.uuid);
+            }
           }
           if (eventData.action === "end_call") {
             RNCallKeep.endCall(eventData.uuid);
