@@ -8,7 +8,6 @@ export default function ProtectedLayout() {
   const { data: user, isLoading } = useAuth();
   useEffect(() => {
     if (!isLoading && user?.id) {
-      // setupCallKeep()
       initSimpleVoIP();
     }
   }, [user, isLoading])
