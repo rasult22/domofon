@@ -1,3 +1,4 @@
+import { AppRegistry, PermissionsAndroid } from 'react-native';
 import RNCallKeep, { IOptions } from 'react-native-callkeep';
 
 const options: IOptions = {
@@ -31,13 +32,23 @@ export const setupCallKeep = async () => {
         alertDescription: 'This app needs access to manage calls',
         cancelButton: 'Cancel',
         okButton: 'Allow',
+        imageName: 'phone_account_icon',
         additionalPermissions: [
-          'android.permission.READ_PHONE_STATE',
-          'android.permission.RECORD_AUDIO'
+          PermissionsAndroid.PERMISSIONS.READ_PHONE_STATE,
+          PermissionsAndroid.PERMISSIONS.RECORD_AUDIO
         ],
         selfManaged: false,
+        foregroundService: {
+          channelId: '',
+          channelName: '',
+          notificationTitle: 'Domofon',
+        }
       }
     });
+    AppRegistry.registerHeadlessTask('RNCallKeepBackgroundMessage', (data: any) => {
+      console.log('RNCallKeepBackgroundMessage', data);
+      return Promise.resolve()
+    })
     console.log('CallKeep setup:', accepted);
     return accepted;
   } catch (error) {

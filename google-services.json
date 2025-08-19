@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "703334997563",
+    "project_id": "domofon-cce27",
+    "storage_bucket": "domofon-cce27.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:703334997563:android:92badc13dc643fdb31c61e",
+        "android_client_info": {
+          "package_name": "com.rasult22.domofon"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAqiPgIllXtpWzDNA42gDPz4lN62Uop0VQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
