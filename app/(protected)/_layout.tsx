@@ -9,7 +9,7 @@ import { Platform } from "react-native";
 export default function ProtectedLayout() {
   const { data: user, isLoading } = useAuth();
   useEffect(() => {
-    if (!isLoading && user?.id) {
+    if (!isLoading && user?.id && Platform.OS === 'ios') {
       initSimpleVoIP();
     }
     if (Platform.OS === 'android') {

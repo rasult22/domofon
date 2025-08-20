@@ -12,7 +12,12 @@
           "package_name": "com.rasult22.domofon"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "703334997563-cbdodqd24un3936e5cocm9c410ao64ai.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyAqiPgIllXtpWzDNA42gDPz4lN62Uop0VQ"
@@ -20,7 +25,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "703334997563-cbdodqd24un3936e5cocm9c410ao64ai.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
