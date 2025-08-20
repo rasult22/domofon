@@ -1,5 +1,6 @@
 import { AppleRequestResponse } from '@invertase/react-native-apple-authentication';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { GetTokensResponse } from '@react-native-google-signin/google-signin';
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { pb } from "./client";
 
@@ -172,3 +173,36 @@ export const useSignOut = () => {
     },
   });
 };
+
+export const useGoogleSignIn = () => {
+  const queryClient = useQueryClient();
+  
+  return useMutation({
+    mutationFn: async (data :{googleCredential: GetTokensResponse, serverAuthCode: string}) => {
+      try {
+        // Use PocketBase Google OAuth
+        const authData = await pb.collection('users').authWithOAuth2Code(
+          'google',
+          data.serverAuthCode,
+          '',
+          `https://rasult22.pockethost.io/api/oauth2-redirect`
+        );
+         // Store auth data
+        await AsyncStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify({
+          token: pb.authStore.token,
+          record: pb.authStore.record
+        }));
+        
+        return authData.record;
+      }catch (error) {
+        console.error('Google sign in error:', error);
+        throw error;
+      }
+    },
+    onSuccess: (data) => {
+      queryClient.setQueryData(['auth'], data);
+    },
+  });
+};
+
+

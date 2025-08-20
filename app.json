@@ -50,12 +50,18 @@
     "plugins": [
       "@react-native-firebase/app",
       "@react-native-firebase/messaging",
+      [
+        "@react-native-google-signin/google-signin",
+        {
+          "iosUrlScheme": "com.googleusercontent.apps.445288541057-bfs4mf7ea546gptmldnpgs7ovn82ddl8"
+        }
+      ],
       ["@config-plugins/react-native-callkeep"],
       ["@config-plugins/react-native-webrtc", 
-    {
-      "cameraPermission": "Allow domofon to access your camera for video calls",
-      "microphonePermission": "Allow domofon to access your microphone for calls"
-    }],
+      {
+        "cameraPermission": "Allow domofon to access your camera for video calls",
+        "microphonePermission": "Allow domofon to access your microphone for calls"
+      }],
       [
         "expo-dev-client",
         {
