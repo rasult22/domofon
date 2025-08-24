@@ -15,6 +15,7 @@
       "usesAppleSignIn": true,
       "bundleIdentifier": "com.rasult22.domofon",
       "appleTeamId": "DGUNQP88RJ",
+      "googleServicesFile": "./GoogleService-Info.plist",
       "infoPlist": {
         "UIBackgroundModes": [
           "voip",
