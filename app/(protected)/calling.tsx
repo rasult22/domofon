@@ -2,6 +2,7 @@ import { pb } from "@/queries/client";
 import { CallDeclined } from "@/screens/calling/call-declined";
 import VideoCall from "@/screens/calling/video-call";
 import { acceptCall } from "@/webrtc/accept-call";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useQuery } from "@tanstack/react-query";
 import { useLocalSearchParams } from "expo-router";
 import React, { useState } from "react";
@@ -18,6 +19,7 @@ export default function IntercomCallScreen() {
     queryKey: ['calling', callId],
     queryFn: async () => {
       if (callId) {
+        await AsyncStorage.removeItem('call_info_android');
         const data = await acceptCall(callId as string, (event) => {
         
         })
