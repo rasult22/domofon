@@ -18,6 +18,7 @@ export default function ProtectedLayout() {
   useEffect(() => {
     if (!isLoading && user?.id && Platform.OS === "ios") {
       initSimpleVoIP();
+      setupCallKeep();
     }
     if (Platform.OS === "android" && !isLoading && user?.id) {
       setupCallKeep();
