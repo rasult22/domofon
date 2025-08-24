@@ -1,6 +1,9 @@
 import LoadingFullScreen from "@/components/LoadingFullScreen";
 import { useAuth } from "@/queries/auth";
-import { setupAndroidVoIP, setupVoIPListeners } from "@/services/setup-android-voip";
+import {
+  setupAndroidVoIP,
+  setupVoIPListeners,
+} from "@/services/setup-android-voip";
 import { setupCallKeep } from "@/services/setup-callkeep";
 import { initSimpleVoIP } from "@/services/simple-voip";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -11,43 +14,39 @@ import { Platform } from "react-native";
 
 export default function ProtectedLayout() {
   const { data: user, isLoading } = useAuth();
-  const router = useRouter()
+  const router = useRouter();
   useEffect(() => {
-    if (!isLoading && user?.id && Platform.OS === 'ios') {
+    if (!isLoading && user?.id && Platform.OS === "ios") {
       initSimpleVoIP();
     }
-  }, [user, isLoading])
-  useQuery({
-    queryKey: ['initVoip'],
+    if (Platform.OS === "android" && !isLoading && user?.id) {
+      setupCallKeep();
+      setupVoIPListeners();
+      setupAndroidVoIP();
+    }
+  }, [user, isLoading]);
+
+  const { isLoading: notificationIsLoading, data: notification } = useQuery({
+    queryKey: ["initialNotification"],
     queryFn: async () => {
-      if (Platform.OS === 'android') {
-        await setupCallKeep()
-        await setupVoIPListeners()
-        await setupAndroidVoIP()
-        return true
-      }
-      return false
-    }
-  })
-  const {isLoading: notificationIsLoading, data: notification} = useQuery({
-    queryKey: ['initialNotification'],
-    queryFn: async ( ) => {
-      const callInfo = await AsyncStorage.getItem('call_info_android')
+      const callInfo = await AsyncStorage.getItem("call_info_android");
       if (callInfo) {
-        const callInfoJson = JSON.parse(callInfo)
-        console.log(callInfoJson, 'callInfo')
-        router.push(`/calling?call_id=${callInfoJson.call_id}&call_uuid=${callInfoJson.call_uuid}`)
+        const callInfoJson = JSON.parse(callInfo);
+        console.log(callInfoJson, "callInfo");
+        router.push(
+          `/calling?call_id=${callInfoJson.call_id}&call_uuid=${callInfoJson.call_uuid}`
+        );
         return callInfoJson as {
-          call_id: string,
-          call_uuid: string,
-          completed: boolean
-        }
+          call_id: string;
+          call_uuid: string;
+          completed: boolean;
+        };
       } else {
-        console.log('there is no callINfo')
+        console.log("there is no callINfo");
       }
-      return null
-    }
-  })
+      return null;
+    },
+  });
 
   if (isLoading || notificationIsLoading) {
     return <LoadingFullScreen />;
@@ -62,11 +61,13 @@ export default function ProtectedLayout() {
   // }
 
   return (
-    <Stack screenOptions={{
-      contentStyle: {
-        backgroundColor: '#000'
-      }
-    }}>
+    <Stack
+      screenOptions={{
+        contentStyle: {
+          backgroundColor: "#000",
+        },
+      }}
+    >
       <Stack.Screen name="index" options={{ headerShown: false }} />
       <Stack.Screen name="apartment-setup" options={{ headerShown: false }} />
     </Stack>

@@ -25,9 +25,9 @@ export const setupAndroidVoIP = async () => {
   const token = await getToken();
 
   const tokenFromPB = await pb.collection("voip_tokens").getFullList({
-      filter: `token='${token}'`,
-    });
-    console.log(tokenFromPB)
+    filter: `token='${token}'`,
+  });
+    console.log(tokenFromPB, 'tokenFrom PB')
     if (!tokenFromPB.length) {
       pb.collection("voip_tokens").create({
         type: Platform.OS,
