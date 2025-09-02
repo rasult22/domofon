@@ -4,13 +4,14 @@ import VideoCall from "@/screens/calling/video-call";
 import { acceptCall } from "@/webrtc/accept-call";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useQuery } from "@tanstack/react-query";
-import { useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import React, { useState } from "react";
 import { StatusBar, Text, View } from "react-native";
 import RNCallKeep from "react-native-callkeep";
 import inCallManager from "react-native-incall-manager";
 
 export default function IntercomCallScreen() {
+  const router = useRouter()
   // get call id from url params
   const callId = useLocalSearchParams().call_id
   const uuid = useLocalSearchParams().uuid
@@ -48,6 +49,7 @@ export default function IntercomCallScreen() {
     if (data?.pc) {
       data?.pc.close?.();
     }
+    router.replace('/')
   };
 
   if (callStatus === "declined") {
