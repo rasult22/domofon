@@ -1,20 +1,49 @@
 import LoadingFullScreen from "@/components/LoadingFullScreen";
 import { useAuth } from "@/queries/auth";
 import {
-  setupAndroidVoIP,
-  setupVoIPListeners,
+  setupAndroidVoIP
 } from "@/services/setup-android-voip";
 import { setupCallKeep } from "@/services/setup-callkeep";
 import { initSimpleVoIP } from "@/services/simple-voip";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import messaging from '@react-native-firebase/messaging';
 import { useQuery } from "@tanstack/react-query";
 import { Redirect, Stack, useRouter } from "expo-router";
 import { useEffect } from "react";
 import { Platform } from "react-native";
+import RNNotificationCall from "react-native-full-screen-notification-incoming-call";
 
 export default function ProtectedLayout() {
   const { data: user, isLoading } = useAuth();
   const router = useRouter();
+
+  useEffect(() => {
+    if (Platform.OS !== "android") {
+      return;
+    }
+    const unsubscribe = messaging().onMessage(async remoteMessage => {
+      console.log('📱 Foreground VoIP message:', remoteMessage);
+
+      RNNotificationCall.displayNotification(remoteMessage.data?.call_uuid as string, null, 30000, {
+        channelId: "com.abc.incomingcall",
+        channelName: "Incoming video call",
+        notificationIcon: "ic_launcher", // mipmap
+        notificationTitle: "Домофон",
+        notificationBody: "Кто-то звонит в домофон...",
+        answerText: "Accept",
+        declineText: "Decline",
+        notificationColor: "colorAccent",
+        isVideo: false,
+        notificationSound: undefined, // raw
+      });
+      RNNotificationCall.addEventListener("answer", (answerPayload) => {
+        router.replace(`/calling?call_id=${remoteMessage.data?.call_id}&call_uuid=${remoteMessage.data?.call_uuid}`)
+      })
+    })
+
+    return unsubscribe
+  }, [])
+
   useEffect(() => {
     if (!isLoading && user?.id && Platform.OS === "ios") {
       initSimpleVoIP();
@@ -22,7 +51,6 @@ export default function ProtectedLayout() {
     }
     if (Platform.OS === "android" && !isLoading && user?.id) {
       setupCallKeep();
-      setupVoIPListeners();
       setupAndroidVoIP();
     }
   }, [user, isLoading]);
