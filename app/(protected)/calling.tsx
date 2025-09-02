@@ -5,7 +5,7 @@ import { acceptCall } from "@/webrtc/accept-call";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useQuery } from "@tanstack/react-query";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { StatusBar, Text, View } from "react-native";
 import RNCallKeep from "react-native-callkeep";
 import inCallManager from "react-native-incall-manager";
@@ -34,8 +34,28 @@ export default function IntercomCallScreen() {
   })
 
   const [callStatus, setCallStatus] = useState("incoming"); // incoming, accepted, declined
+  const pb_unsubscribeRef = useRef<() => void>(() => {})
+
+  // update ui when other party ended the call
+  useEffect(() => {
+    const fn = async () => {
+      pb_unsubscribeRef.current = await pb.collection<{status: string}>('calls').subscribe(callId as string, (data) => {
+        if (data.record.status === 'ENDED') {
+          handleEndCall()
+        }
+      })
+    }
+    fn()
+
+    return () => {
+      pb_unsubscribeRef.current()
+    }
+  }, [callId])
 
   const handleEndCall = () => {
+    if (callStatus === 'declined') {
+      return
+    }
     setCallStatus("declined");
     inCallManager.stop()
     if (callId) {
