@@ -1,6 +1,7 @@
 import { pb } from "@/queries/client";
 import { CallDeclined } from "@/screens/calling/call-declined";
 import VideoCall from "@/screens/calling/video-call";
+import { Call } from "@/types/types";
 import { acceptCall } from "@/webrtc/accept-call";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useQuery } from "@tanstack/react-query";
@@ -39,7 +40,7 @@ export default function IntercomCallScreen() {
   // update ui when other party ended the call
   useEffect(() => {
     const fn = async () => {
-      pb_unsubscribeRef.current = await pb.collection<{status: string}>('calls').subscribe(callId as string, (data) => {
+      pb_unsubscribeRef.current = await pb.collection<Call>('calls').subscribe(callId as string, (data) => {
         if (data.record.status === 'ENDED') {
           handleEndCall()
         }
