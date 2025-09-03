@@ -1,4 +1,5 @@
 import { pb } from "@/queries/client";
+import { VoipToken } from "@/types/types";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from "expo-router";
 import { Platform } from "react-native";
@@ -13,11 +14,11 @@ export const initSimpleVoIP = () => {
     // console.log("📱 VoIP Token received (new):", token);
     // console.log("📱 Token length:", token.length);
     // console.log("📱 auth store is valid:", pb.authStore.isValid);
-    const tokenFromPB = await pb.collection("voip_tokens").getFullList({
+    const tokenFromPB = await pb.collection<VoipToken>("voip_tokens").getFullList({
       filter: `token='${token}'`,
     });
     if (!tokenFromPB.length) {
-      pb.collection("voip_tokens").create({
+      pb.collection<VoipToken>("voip_tokens").create({
         type: Platform.OS,
         token,
         user_id: pb.authStore.record?.id,

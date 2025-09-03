@@ -1,3 +1,4 @@
+import { Apartment } from '@/types/types';
 import { AppleRequestResponse } from '@invertase/react-native-apple-authentication';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { GetTokensResponse } from '@react-native-google-signin/google-signin';
@@ -72,7 +73,7 @@ export const useUserApartment = () => useQuery({
       }
 
       // TODO: Заменить на реальный запрос к коллекции user_apartments
-      const apartment = await pb.collection('apartments').getFirstListItem(
+      const apartment = await pb.collection<Apartment>('apartments').getFirstListItem(
         `user="${pb.authStore.record?.id}"`
       );
       
@@ -98,7 +99,7 @@ export const useSetupApartment = () => {
           throw new Error('User not authenticated');
         }
 
-        let apartmentRecord = await pb.collection('apartments').getFirstListItem(
+        let apartmentRecord = await pb.collection<Apartment>('apartments').getFirstListItem(
           `apartment_code = "${apartmentCode}"`
         );
         if (!apartmentRecord) {
@@ -106,12 +107,12 @@ export const useSetupApartment = () => {
         }
 
         // Проверка, что квартира не привязана к другому пользователю
-        if (apartmentRecord.user_id) {
+        if (apartmentRecord.user) {
           throw new Error('Apartment already linked to another user');
         }
 
         // Привязываем квартиру к текущему пользователю
-        apartmentRecord = await pb.collection('apartments').update(apartmentRecord.id, {
+        apartmentRecord = await pb.collection<Apartment>('apartments').update(apartmentRecord.id, {
           user: pb.authStore.record?.id,
         });
         

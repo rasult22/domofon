@@ -1,4 +1,5 @@
 import { pb } from '@/queries/client';
+import { VoipToken } from '@/types/types';
 import messaging from '@react-native-firebase/messaging';
 import { PermissionsAndroid, Platform } from 'react-native';
 const requestPermission = async () => {
@@ -24,7 +25,7 @@ export const setupAndroidVoIP = async () => {
   await requestPermission()
   const token = await getToken();
 
-  const tokenFromPB = await pb.collection("voip_tokens").getFullList({
+  const tokenFromPB = await pb.collection<VoipToken>("voip_tokens").getFullList({
     filter: `token='${token}'`,
   });
     console.log(tokenFromPB, 'tokenFrom PB')
