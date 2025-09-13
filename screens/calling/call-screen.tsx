@@ -1,4 +1,5 @@
 import { useApartmentData } from "@/queries/apartment";
+import { pb } from "@/queries/client";
 import { Building, Home, Unlock } from "lucide-react-native";
 import React, { useState } from "react";
 import { StatusBar, Text, TouchableOpacity, View } from "react-native";
@@ -12,22 +13,41 @@ import Animated, {
 export default function IntercomCallScreen() {
   const { data: apartmentData, isLoading, error } = useApartmentData();
   const [isDoorOpened, setIsDoorOpened] = useState(false);
+  const [isDoorLoading, setIsDoorLoading] = useState(false); // Add loading state
   
   // Reanimated values
   const doorButtonScale = useSharedValue(1);
 
-  const handleOpenDoor = () => {
+  const handleOpenDoor = async () => {
+    if (isDoorLoading || isDoorOpened) return; // Prevent multiple calls
+    
     doorButtonScale.value = withSequence(
       withTiming(0.9, { duration: 100 }),
       withTiming(1.1, { duration: 150 }),
       withTiming(1, { duration: 100 })
     );
-    setIsDoorOpened(true);
-
-    // Reset door status after 3 seconds
-    setTimeout(() => {
-      setIsDoorOpened(false);
-    }, 3000);
+    
+    setIsDoorLoading(true); // Start loading
+    
+    try {
+      const res = await pb.send('/open-door', {
+        'method': 'POST'
+      });
+      console.log('res', res);
+      
+      setIsDoorOpened(true);
+      
+      // Reset door status after 3 seconds
+      setTimeout(() => {
+        setIsDoorOpened(false);
+      }, 3000);
+      
+    } catch (error) {
+      console.error('Failed to open door:', error);
+      // You might want to show an error message to the user
+    } finally {
+      setIsDoorLoading(false); // Stop loading
+    }
   };
 
   // Animated styles
@@ -80,16 +100,6 @@ export default function IntercomCallScreen() {
       {/* Background gradient effect */}
       <View className="absolute inset-0 bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 opacity-90" />
 
-      {/* Header */}
-      <View className="pt-12 pb-4 px-6 z-10">
-        <View className="flex-row justify-between items-center">
-          <Text className="text-white text-lg font-semibold">Домофон</Text>
-          <View className="flex-row items-center">
-            <View className="w-3 h-3 bg-green-500 rounded-full mr-2" />
-            <Text className="text-green-400 text-sm">Онлайн</Text>
-          </View>
-        </View>
-      </View>
 
       {/* Main Content */}
       <View className="flex-1 justify-center items-center px-6">
@@ -117,18 +127,28 @@ export default function IntercomCallScreen() {
             </View>
           </View>
         )}
+        
+        {/* Door Loading Indicator */}
+        {isDoorLoading && (
+          <View className="mb-6">
+            <View className="flex-row items-center bg-black bg-opacity-50 px-4 py-2 rounded-full">
+              <View className="w-3 h-3 bg-yellow-500 rounded-full mr-2 animate-pulse" />
+              <Text className="text-yellow-400 text-sm">Открываем дверь...</Text>
+            </View>
+          </View>
+        )}
 
         {/* Open Door Button */}
         <Animated.View style={doorButtonAnimatedStyle}>
           <TouchableOpacity
             className={`w-20 h-20 rounded-full items-center justify-center shadow-xl ${
-              isDoorOpened ? "bg-orange-600" : "bg-blue-600"
+              isDoorOpened ? "bg-orange-600" : isDoorLoading ? "bg-yellow-600" : "bg-blue-600"
             }`}
             onPress={handleOpenDoor}
             activeOpacity={0.8}
-            disabled={isDoorOpened}
+            disabled={isDoorOpened || isDoorLoading} // Disable during loading
             style={{
-              shadowColor: isDoorOpened ? "#EA580C" : "#2563EB",
+              shadowColor: isDoorOpened ? "#EA580C" : isDoorLoading ? "#D97706" : "#2563EB",
               shadowOffset: { width: 0, height: 4 },
               shadowOpacity: 0.3,
               shadowRadius: 8,
