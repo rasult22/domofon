@@ -2,10 +2,22 @@
   <style name="AppTheme" parent="Theme.EdgeToEdge">
     <item name="android:editTextBackground">@drawable/rn_edit_text_material</item>
     <item name="colorPrimary">@color/colorPrimary</item>
-    <item name="android:statusBarColor">#ffffff</item>
+    <item name="android:statusBarColor">#1B1A2F</item>
   </style>
   <style name="incomingCall" parent="Theme.AppCompat.Light.NoActionBar">
+    
+    
+    
+    
     color
+    
+  
+    
+  
+    
+  
+    
+  
     <item name="colorPrimaryDark">#000000</item>
   </style>
   <style name="Theme.App.SplashScreen" parent="Theme.SplashScreen">
