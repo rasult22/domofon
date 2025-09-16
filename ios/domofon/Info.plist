@@ -39,6 +39,12 @@
           <string>exp+domofon</string>
         </array>
       </dict>
+      <dict>
+        <key>CFBundleURLSchemes</key>
+        <array>
+          <string>com.googleusercontent.apps.445288541057-bfs4mf7ea546gptmldnpgs7ovn82ddl8</string>
+        </array>
+      </dict>
     </array>
     <key>CFBundleVersion</key>
     <string>1</string>

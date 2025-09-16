@@ -21,6 +21,7 @@ header = {
 now = Time.now.to_i
 payload = {
   'iss' => TEAM_ID,
+  'exp' => now + (6 * 30 * 24 * 60 * 60), # 6 months from now
   'iat' => now
 }
 
