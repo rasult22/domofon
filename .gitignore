@@ -39,5 +39,8 @@ client_secret_*.json
 # typescript
 *.tsbuildinfo
 
+*.apk
+*.aab
+
 app-example
 main.pb.js
