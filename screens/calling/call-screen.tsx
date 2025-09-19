@@ -1,8 +1,7 @@
 import { useApartmentData } from "@/queries/apartment";
-import { pb } from "@/queries/client";
-import { Building, Home, Unlock } from "lucide-react-native";
+import { Building, Car, DoorOpen, Home, Unlock, Users } from "lucide-react-native";
 import React, { useState } from "react";
-import { StatusBar, Text, TouchableOpacity, View } from "react-native";
+import { ScrollView, StatusBar, Text, TouchableOpacity, View } from "react-native";
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -13,13 +12,19 @@ import Animated, {
 export default function IntercomCallScreen() {
   const { data: apartmentData, isLoading, error } = useApartmentData();
   const [isDoorOpened, setIsDoorOpened] = useState(false);
-  const [isDoorLoading, setIsDoorLoading] = useState(false); // Add loading state
+  const [isDoorLoading, setIsDoorLoading] = useState(false);
+  const [isGateOpened, setIsGateOpened] = useState(false);
+  const [isGateLoading, setIsGateLoading] = useState(false);
+  const [isBarrierOpened, setIsBarrierOpened] = useState(false);
+  const [isBarrierLoading, setIsBarrierLoading] = useState(false);
   
   // Reanimated values
   const doorButtonScale = useSharedValue(1);
+  const gateButtonScale = useSharedValue(1);
+  const barrierButtonScale = useSharedValue(1);
 
   const handleOpenDoor = async () => {
-    if (isDoorLoading || isDoorOpened) return; // Prevent multiple calls
+    if (isDoorLoading || isDoorOpened) return;
     
     doorButtonScale.value = withSequence(
       withTiming(0.9, { duration: 100 }),
@@ -27,26 +32,61 @@ export default function IntercomCallScreen() {
       withTiming(1, { duration: 100 })
     );
     
-    setIsDoorLoading(true); // Start loading
+    setIsDoorLoading(true);
     
     try {
-      const res = await pb.send('/open-door', {
-        'method': 'POST'
-      });
-      console.log('res', res);
-      
+      // Имитация API вызова
+      await new Promise(resolve => setTimeout(resolve, 1000));
       setIsDoorOpened(true);
-      
-      // Reset door status after 3 seconds
-      setTimeout(() => {
-        setIsDoorOpened(false);
-      }, 3000);
-      
+      setTimeout(() => setIsDoorOpened(false), 3000);
     } catch (error) {
       console.error('Failed to open door:', error);
-      // You might want to show an error message to the user
     } finally {
-      setIsDoorLoading(false); // Stop loading
+      setIsDoorLoading(false);
+    }
+  };
+
+  const handleOpenGate = async () => {
+    if (isGateLoading || isGateOpened) return;
+    
+    gateButtonScale.value = withSequence(
+      withTiming(0.9, { duration: 100 }),
+      withTiming(1.1, { duration: 150 }),
+      withTiming(1, { duration: 100 })
+    );
+    
+    setIsGateLoading(true);
+    
+    try {
+      await new Promise(resolve => setTimeout(resolve, 1200));
+      setIsGateOpened(true);
+      setTimeout(() => setIsGateOpened(false), 5000);
+    } catch (error) {
+      console.error('Failed to open gate:', error);
+    } finally {
+      setIsGateLoading(false);
+    }
+  };
+
+  const handleOpenBarrier = async () => {
+    if (isBarrierLoading || isBarrierOpened) return;
+    
+    barrierButtonScale.value = withSequence(
+      withTiming(0.9, { duration: 100 }),
+      withTiming(1.1, { duration: 150 }),
+      withTiming(1, { duration: 100 })
+    );
+    
+    setIsBarrierLoading(true);
+    
+    try {
+      await new Promise(resolve => setTimeout(resolve, 800));
+      setIsBarrierOpened(true);
+      setTimeout(() => setIsBarrierOpened(false), 8000);
+    } catch (error) {
+      console.error('Failed to open barrier:', error);
+    } finally {
+      setIsBarrierLoading(false);
     }
   };
 
@@ -54,6 +94,18 @@ export default function IntercomCallScreen() {
   const doorButtonAnimatedStyle = useAnimatedStyle(() => {
     return {
       transform: [{ scale: doorButtonScale.value }],
+    };
+  });
+
+  const gateButtonAnimatedStyle = useAnimatedStyle(() => {
+    return {
+      transform: [{ scale: gateButtonScale.value }],
+    };
+  });
+
+  const barrierButtonAnimatedStyle = useAnimatedStyle(() => {
+    return {
+      transform: [{ scale: barrierButtonScale.value }],
     };
   });
 
@@ -100,72 +152,189 @@ export default function IntercomCallScreen() {
       {/* Background gradient effect */}
       <View className="absolute inset-0 bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 opacity-90" />
 
-
-      {/* Main Content */}
-      <View className="flex-1 justify-center items-center px-6">
+      <ScrollView className="flex-1" contentContainerStyle={{ paddingVertical: 80 }}>
         {/* Apartment Info Card */}
-        <View className="bg-gray-800 rounded-3xl p-8 items-center w-full max-w-sm mb-8">
-          <View className="w-20 h-20 bg-blue-500 rounded-full items-center justify-center mb-6">
-            <Building size={40} color="white" />
+        <View className="bg-gray-800 rounded-3xl p-6 items-center mx-6 mb-6">
+          <View className="w-16 h-16 bg-blue-500 rounded-full items-center justify-center mb-4">
+            <Building size={32} color="white" />
           </View>
           
-          <Text className="text-white text-2xl font-bold mb-2">
+          <Text className="text-white text-xl font-bold mb-1">
             Квартира {apartment.apartment_number}
           </Text>
           
-          <Text className="text-gray-400 text-lg mb-4">
+          <Text className="text-gray-400 text-base">
             {complex.name}
           </Text>
         </View>
 
-        {/* Door Status Indicator */}
-        {isDoorOpened && (
-          <View className="mb-6">
-            <View className="flex-row items-center bg-black bg-opacity-50 px-4 py-2 rounded-full">
-              <View className="w-3 h-3 bg-orange-500 rounded-full mr-2" />
-              <Text className="text-orange-400 text-sm">Дверь открыта</Text>
-            </View>
-          </View>
-        )}
-        
-        {/* Door Loading Indicator */}
-        {isDoorLoading && (
-          <View className="mb-6">
-            <View className="flex-row items-center bg-black bg-opacity-50 px-4 py-2 rounded-full">
-              <View className="w-3 h-3 bg-yellow-500 rounded-full mr-2 animate-pulse" />
-              <Text className="text-yellow-400 text-sm">Открываем дверь...</Text>
-            </View>
+        {/* Status Indicators */}
+        {(isDoorOpened || isDoorLoading || isGateOpened || isGateLoading || isBarrierOpened || isBarrierLoading) && (
+          <View className="mx-6 mb-6">
+            {(isDoorOpened || isDoorLoading) && (
+              <View className="flex-row items-center bg-black bg-opacity-50 px-4 py-2 rounded-full mb-2">
+                <View className={`w-3 h-3 rounded-full mr-2 ${
+                  isDoorOpened ? 'bg-orange-500' : 'bg-yellow-500'
+                } ${isDoorLoading ? 'animate-pulse' : ''}`} />
+                <Text className={`text-sm ${
+                  isDoorOpened ? 'text-orange-400' : 'text-yellow-400'
+                }`}>
+                  {isDoorOpened ? 'Дверь открыта' : 'Открываем дверь...'}
+                </Text>
+              </View>
+            )}
+            
+            {(isGateOpened || isGateLoading) && (
+              <View className="flex-row items-center bg-black bg-opacity-50 px-4 py-2 rounded-full mb-2">
+                <View className={`w-3 h-3 rounded-full mr-2 ${
+                  isGateOpened ? 'bg-green-500' : 'bg-yellow-500'
+                } ${isGateLoading ? 'animate-pulse' : ''}`} />
+                <Text className={`text-sm ${
+                  isGateOpened ? 'text-green-400' : 'text-yellow-400'
+                }`}>
+                  {isGateOpened ? 'Калитка открыта' : 'Открываем калитку...'}
+                </Text>
+              </View>
+            )}
+            
+            {(isBarrierOpened || isBarrierLoading) && (
+              <View className="flex-row items-center bg-black bg-opacity-50 px-4 py-2 rounded-full mb-2">
+                <View className={`w-3 h-3 rounded-full mr-2 ${
+                  isBarrierOpened ? 'bg-purple-500' : 'bg-yellow-500'
+                } ${isBarrierLoading ? 'animate-pulse' : ''}`} />
+                <Text className={`text-sm ${
+                  isBarrierOpened ? 'text-purple-400' : 'text-yellow-400'
+                }`}>
+                  {isBarrierOpened ? 'Шлагбаум поднят' : 'Поднимаем шлагбаум...'}
+                </Text>
+              </View>
+            )}
           </View>
         )}
 
-        {/* Open Door Button */}
-        <Animated.View style={doorButtonAnimatedStyle}>
-          <TouchableOpacity
-            className={`w-20 h-20 rounded-full items-center justify-center shadow-xl ${
-              isDoorOpened ? "bg-orange-600" : isDoorLoading ? "bg-yellow-600" : "bg-blue-600"
-            }`}
-            onPress={handleOpenDoor}
-            activeOpacity={0.8}
-            disabled={isDoorOpened || isDoorLoading} // Disable during loading
-            style={{
-              shadowColor: isDoorOpened ? "#EA580C" : isDoorLoading ? "#D97706" : "#2563EB",
-              shadowOffset: { width: 0, height: 4 },
-              shadowOpacity: 0.3,
-              shadowRadius: 8,
-              elevation: 8,
-            }}
-          >
-            <Unlock size={32} color="white" />
-          </TouchableOpacity>
-        </Animated.View>
+        {/* Control Sections */}
         
-        <Text className="text-gray-400 text-center mt-4 px-4">
-          {isDoorOpened 
-            ? "Дверь открыта на 3 секунды" 
-            : "Нажмите, чтобы открыть дверь"
-          }
-        </Text>
-      </View>
+        {/* Doors Section */}
+        <View className="mx-6 mb-6">
+          <View className="flex-row items-center mb-4">
+            <View className="w-8 h-8 bg-blue-600 rounded-lg items-center justify-center mr-3">
+              <Home size={18} color="white" />
+            </View>
+            <Text className="text-white text-lg font-semibold">Двери</Text>
+          </View>
+          
+          <View className="bg-gray-800 rounded-2xl p-4">
+            <View className="flex-row justify-center">
+              <View className="items-center">
+                <Animated.View style={doorButtonAnimatedStyle}>
+                  <TouchableOpacity
+                    className={`w-16 h-16 rounded-2xl items-center justify-center ${
+                      isDoorOpened ? "bg-orange-600" : isDoorLoading ? "bg-yellow-600" : "bg-blue-600"
+                    }`}
+                    onPress={handleOpenDoor}
+                    activeOpacity={0.8}
+                    disabled={isDoorOpened || isDoorLoading}
+                    style={{
+                      shadowColor: isDoorOpened ? "#EA580C" : isDoorLoading ? "#D97706" : "#2563EB",
+                      shadowOffset: { width: 0, height: 4 },
+                      shadowOpacity: 0.3,
+                      shadowRadius: 8,
+                      elevation: 8,
+                    }}
+                  >
+                    <Unlock size={24} color="white" />
+                  </TouchableOpacity>
+                </Animated.View>
+                <Text className="text-gray-300 text-sm mt-2 text-center">Входная дверь</Text>
+              </View>
+            </View>
+          </View>
+        </View>
+
+        {/* Gates Section */}
+        <View className="mx-6 mb-6">
+          <View className="flex-row items-center mb-4">
+            <View className="w-8 h-8 bg-green-600 rounded-lg items-center justify-center mr-3">
+              <Users size={18} color="white" />
+            </View>
+            <Text className="text-white text-lg font-semibold">Калитки</Text>
+          </View>
+          
+          <View className="bg-gray-800 rounded-2xl p-4">
+            <View className="flex-row justify-center">
+              <View className="items-center">
+                <Animated.View style={gateButtonAnimatedStyle}>
+                  <TouchableOpacity
+                    className={`w-16 h-16 rounded-2xl items-center justify-center ${
+                      isGateOpened ? "bg-green-600" : isGateLoading ? "bg-yellow-600" : "bg-green-500"
+                    }`}
+                    onPress={handleOpenGate}
+                    activeOpacity={0.8}
+                    disabled={isGateOpened || isGateLoading}
+                    style={{
+                      shadowColor: isGateOpened ? "#16A34A" : isGateLoading ? "#D97706" : "#22C55E",
+                      shadowOffset: { width: 0, height: 4 },
+                      shadowOpacity: 0.3,
+                      shadowRadius: 8,
+                      elevation: 8,
+                    }}
+                  >
+                    <DoorOpen size={24} color="white" />
+                  </TouchableOpacity>
+                </Animated.View>
+                <Text className="text-gray-300 text-sm mt-2 text-center">Основная калитка</Text>
+              </View>
+            </View>
+          </View>
+        </View>
+
+        {/* Barriers Section */}
+        <View className="mx-6 mb-6">
+          <View className="flex-row items-center mb-4">
+            <View className="w-8 h-8 bg-purple-600 rounded-lg items-center justify-center mr-3">
+              <Car size={18} color="white" />
+            </View>
+            <Text className="text-white text-lg font-semibold">Шлагбаумы</Text>
+          </View>
+          
+          <View className="bg-gray-800 rounded-2xl p-4">
+            <View className="flex-row justify-center">
+              <View className="items-center">
+                <Animated.View style={barrierButtonAnimatedStyle}>
+                  <TouchableOpacity
+                    className={`w-16 h-16 rounded-2xl items-center justify-center ${
+                      isBarrierOpened ? "bg-purple-600" : isBarrierLoading ? "bg-yellow-600" : "bg-purple-500"
+                    }`}
+                    onPress={handleOpenBarrier}
+                    activeOpacity={0.8}
+                    disabled={isBarrierOpened || isBarrierLoading}
+                    style={{
+                      shadowColor: isBarrierOpened ? "#9333EA" : isBarrierLoading ? "#D97706" : "#A855F7",
+                      shadowOffset: { width: 0, height: 4 },
+                      shadowOpacity: 0.3,
+                      shadowRadius: 8,
+                      elevation: 8,
+                    }}
+                  >
+                    <Text className="text-white text-lg font-bold">⬆</Text>
+                  </TouchableOpacity>
+                </Animated.View>
+                <Text className="text-gray-300 text-sm mt-2 text-center">Въездной шлагбаум</Text>
+              </View>
+            </View>
+          </View>
+        </View>
+
+        {/* Instructions */}
+        <View className="mx-6 mb-4">
+          <Text className="text-gray-400 text-center text-sm leading-5">
+            {isDoorOpened || isGateOpened || isBarrierOpened
+              ? "Устройства автоматически закроются через несколько секунд"
+              : "Нажмите на кнопку для управления устройством"
+            }
+          </Text>
+        </View>
+      </ScrollView>
 
       {/* Footer */}
       <View className="pb-8 px-6">
