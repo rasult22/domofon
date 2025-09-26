@@ -257,78 +257,67 @@ export default function IntercomCallScreen() {
         </View>
 
         {/* Gates Section */}
-        <View className="mx-6 mb-6">
-          <View className="flex-row items-center mb-4">
-            <View className="w-8 h-8 bg-green-600 rounded-lg items-center justify-center mr-3">
-              <Users size={18} color="white" />
+        {gatesData && gatesData.filter(gate => gate.type === 'GATE').length > 0 && (
+          <View className="mx-6 mb-6">
+            <View className="flex-row items-center mb-4">
+              <View className="w-8 h-8 bg-green-600 rounded-lg items-center justify-center mr-3">
+                <Users size={18} color="white" />
+              </View>
+              <Text className="text-white text-lg font-semibold">Калитки</Text>
             </View>
-            <Text className="text-white text-lg font-semibold">Калитки</Text>
-          </View>
-          
-          <View className="bg-gray-800 rounded-2xl p-4">
-            <View className="flex-row justify-center">
-              <View className="items-center">
-                <Animated.View style={gateButtonAnimatedStyle}>
-                  <TouchableOpacity
-                    className={`w-16 h-16 rounded-2xl items-center justify-center ${
-                      isGateOpened ? "bg-green-600" : isGateLoading ? "bg-yellow-600" : "bg-green-500"
-                    }`}
-                    onPress={handleOpenGate}
-                    activeOpacity={0.8}
-                    disabled={isGateOpened || isGateLoading}
-                    style={{
-                      shadowColor: isGateOpened ? "#16A34A" : isGateLoading ? "#D97706" : "#22C55E",
-                      shadowOffset: { width: 0, height: 4 },
-                      shadowOpacity: 0.3,
-                      shadowRadius: 8,
-                      elevation: 8,
-                    }}
-                  >
-                    <DoorOpen size={24} color="white" />
-                  </TouchableOpacity>
-                </Animated.View>
-                <Text className="text-gray-300 text-sm mt-2 text-center">Основная калитка</Text>
+            
+            <View className="bg-gray-800 rounded-2xl p-4">
+              <View className="flex-row flex-wrap justify-center gap-3">
+                {gatesData?.filter(gate => gate.type === 'GATE').map(gate => (
+                  <View key={gate.id} className="items-center">
+                    <TouchableOpacity
+                      className="w-16 h-16 rounded-xl items-center justify-center bg-green-500"
+                      onPress={() => console.log('Open gate', gate.name)}
+                      activeOpacity={0.8}
+                    >
+                      <DoorOpen size={24} color="white" />
+                    </TouchableOpacity>
+                    <Text className="text-gray-300 text-xs mt-1 text-center w-24" numberOfLines={3}>
+                      {gate.name}
+                    </Text>
+                  </View>
+                ))}
               </View>
             </View>
           </View>
-        </View>
+        )}
 
         {/* Barriers Section */}
-        <View className="mx-6 mb-6">
-          <View className="flex-row items-center mb-4">
-            <View className="w-8 h-8 bg-purple-600 rounded-lg items-center justify-center mr-3">
-              <Car size={18} color="white" />
+        {gatesData && gatesData?.filter(gate => gate.type === 'BARRIER').length > 0 && (
+          <View className="mx-6 mb-6">
+            <View className="flex-row items-center mb-4">
+              <View className="w-8 h-8 bg-purple-600 rounded-lg items-center justify-center mr-3">
+                <Car size={18} color="white" />
+              </View>
+              <Text className="text-white text-lg font-semibold">Шлагбаумы</Text>
             </View>
-            <Text className="text-white text-lg font-semibold">Шлагбаумы</Text>
-          </View>
-          
-          <View className="bg-gray-800 rounded-2xl p-4">
-            <View className="flex-row justify-center">
-              <View className="items-center">
-                <Animated.View style={barrierButtonAnimatedStyle}>
-                  <TouchableOpacity
-                    className={`w-16 h-16 rounded-2xl items-center justify-center ${
-                      isBarrierOpened ? "bg-purple-600" : isBarrierLoading ? "bg-yellow-600" : "bg-purple-500"
-                    }`}
-                    onPress={handleOpenBarrier}
-                    activeOpacity={0.8}
-                    disabled={isBarrierOpened || isBarrierLoading}
-                    style={{
-                      shadowColor: isBarrierOpened ? "#9333EA" : isBarrierLoading ? "#D97706" : "#A855F7",
-                      shadowOffset: { width: 0, height: 4 },
-                      shadowOpacity: 0.3,
-                      shadowRadius: 8,
-                      elevation: 8,
-                    }}
-                  >
-                    <Text className="text-white text-lg font-bold">⬆</Text>
-                  </TouchableOpacity>
-                </Animated.View>
-                <Text className="text-gray-300 text-sm mt-2 text-center">Въездной шлагбаум</Text>
+            
+            <View className="bg-gray-800 rounded-2xl p-4">
+              <View className="flex-row flex-wrap justify-center gap-3">
+                {gatesData?.filter(gate => gate.type === 'BARRIER').map(gate => (
+                  <View key={gate.id} className="items-center">
+                    <TouchableOpacity
+                      className="w-16 h-16 rounded-xl items-center justify-center bg-purple-500"
+                      onPress={() => console.log('Open barrier', gate.name)}
+                      activeOpacity={0.8}
+                    >
+                      <Car size={24} color="white" />
+                    </TouchableOpacity>
+                    <Text className="text-gray-300 text-xs mt-1 text-center w-24" numberOfLines={3}>
+                      {gate.name}
+                    </Text>
+                  </View>
+                ))}
               </View>
             </View>
           </View>
-        </View>
+        )}
+
 
         {/* Instructions */}
         <View className="mx-6 mb-4">
