@@ -1,4 +1,5 @@
 import { useApartmentData } from "@/queries/apartment";
+import { pb } from "@/queries/client";
 import { Building, Car, DoorOpen, Home, Unlock, Users } from "lucide-react-native";
 import React, { useState } from "react";
 import { ScrollView, StatusBar, Text, TouchableOpacity, View } from "react-native";
@@ -36,7 +37,9 @@ export default function IntercomCallScreen() {
     
     try {
       // Имитация API вызова
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      await pb.send('/open-door', {
+        method: 'POST'
+      })
       setIsDoorOpened(true);
       setTimeout(() => setIsDoorOpened(false), 3000);
     } catch (error) {
