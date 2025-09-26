@@ -1,5 +1,6 @@
 import { useApartmentData } from "@/queries/apartment";
 import { pb } from "@/queries/client";
+import { useGates } from "@/queries/gates";
 import { Building, Car, DoorOpen, Home, Unlock, Users } from "lucide-react-native";
 import React, { useState } from "react";
 import { ScrollView, StatusBar, Text, TouchableOpacity, View } from "react-native";
@@ -12,6 +13,7 @@ import Animated, {
 
 export default function IntercomCallScreen() {
   const { data: apartmentData, isLoading, error } = useApartmentData();
+  const { data: gatesData, isLoading: isGatesLoading, error: gatesError } = useGates(apartmentData?.apartment);
   const [isDoorOpened, setIsDoorOpened] = useState(false);
   const [isDoorLoading, setIsDoorLoading] = useState(false);
   const [isGateOpened, setIsGateOpened] = useState(false);
@@ -112,7 +114,7 @@ export default function IntercomCallScreen() {
     };
   });
 
-  if (isLoading) {
+  if (isLoading || isGatesLoading) {
     return (
       <View className="flex-1 bg-gray-900 w-full justify-center items-center">
         <StatusBar barStyle="light-content" backgroundColor="#111827" />
@@ -129,7 +131,7 @@ export default function IntercomCallScreen() {
     );
   }
 
-  if (error || !apartmentData) {
+  if (error || !apartmentData || gatesError) {
     return (
       <View className="flex-1 bg-gray-900 w-full justify-center items-center">
         <StatusBar barStyle="light-content" backgroundColor="#111827" />
