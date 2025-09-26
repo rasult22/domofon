@@ -1,6 +1,7 @@
-import { Mic, MicOff, PhoneOff, Video, VideoOff, Unlock } from "lucide-react-native";
+import { pb } from "@/queries/client";
+import { Mic, MicOff, PhoneOff, Unlock, Video, VideoOff } from "lucide-react-native";
 import React, { useEffect, useState } from "react";
-import { StatusBar, Text, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, StatusBar, Text, TouchableOpacity, View } from "react-native";
 import inCallManager from "react-native-incall-manager";
 import Animated, {
   LinearTransition,
@@ -23,6 +24,7 @@ export default function VideoCall({ remoteStream, localStream, onEndCall }: Vide
   const [isVideoEnabled, setIsVideoEnabled] = useState(true);
   const [callDuration, setCallDuration] = useState(0);
   const [isDoorOpened, setIsDoorOpened] = useState(false);
+  const [isDoorLoading, setIsDoorLoading] = useState(false);
 
   // Reanimated values
   const buttonScale = useSharedValue(1);
@@ -78,18 +80,28 @@ export default function VideoCall({ remoteStream, localStream, onEndCall }: Vide
     });
   };
 
-  const handleOpenDoor = () => {
+  const handleOpenDoor = async () => {
+    if (isDoorLoading || isDoorOpened) return;
+    
     doorButtonScale.value = withSequence(
       withTiming(0.9, { duration: 100 }),
       withTiming(1.1, { duration: 150 }),
       withTiming(1, { duration: 100 })
     );
-    setIsDoorOpened(true);
-
-    // Reset door status after 3 seconds
-    setTimeout(() => {
-      setIsDoorOpened(false);
-    }, 3000);
+    
+    setIsDoorLoading(true);
+    
+    try {
+      await pb.send('/open-door', {
+        method: 'POST'
+      });
+      setIsDoorOpened(true);
+      setTimeout(() => setIsDoorOpened(false), 3000);
+    } catch (error) {
+      console.error('Failed to open door:', error);
+    } finally {
+      setIsDoorLoading(false);
+    }
   };
 
   // Animated styles
@@ -222,20 +234,24 @@ export default function VideoCall({ remoteStream, localStream, onEndCall }: Vide
             >
               <TouchableOpacity
                 className={`w-16 h-16 rounded-full items-center justify-center shadow-xl ${
-                  isDoorOpened ? "bg-orange-600" : "bg-blue-600"
+                  isDoorOpened ? "bg-orange-600" : isDoorLoading ? "bg-yellow-600" : "bg-blue-600"
                 }`}
                 onPress={handleOpenDoor}
                 activeOpacity={0.8}
-                disabled={isDoorOpened}
+                disabled={isDoorOpened || isDoorLoading}
                 style={{
-                  shadowColor: isDoorOpened ? "#EA580C" : "#2563EB",
+                  shadowColor: isDoorOpened ? "#EA580C" : isDoorLoading ? "#D97706" : "#2563EB",
                   shadowOffset: { width: 0, height: 4 },
                   shadowOpacity: 0.3,
                   shadowRadius: 8,
                   elevation: 8,
                 }}
               >
-                <Unlock size={28} color="white" />
+                {isDoorLoading ? (
+                  <ActivityIndicator key={'loading-indicator'} size="small" color="white" />
+                ) : (
+                  <Unlock key={'unlock-icon'} size={28} color="white" />
+                )}
               </TouchableOpacity>
             </Animated.View>
 
