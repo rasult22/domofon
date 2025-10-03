@@ -85,10 +85,6 @@ export default function ProtectedLayout() {
     return <Redirect href="/sign-in" />;
   }
 
-  // if (notification) {
-  //   return <Redirect href={`/?call_id=${notification.call_id}&call_uuid=${notification.call_uuid}`} />
-  // }
-
   return (
     <Stack
       screenOptions={{
@@ -99,6 +95,7 @@ export default function ProtectedLayout() {
     >
       <Stack.Screen name="index" options={{ headerShown: false }} />
       <Stack.Screen name="apartment-setup" options={{ headerShown: false }} />
+      <Stack.Screen name="profile" options={{ headerShown: true, headerTitle: "Профиль", headerTintColor: '#000' }} />
     </Stack>
   );
 }

@@ -1,7 +1,8 @@
 import { useApartmentData } from "@/queries/apartment";
 import { pb } from "@/queries/client";
 import { useGates } from "@/queries/gates";
-import { Building, Car, DoorOpen, Home, Unlock, Users } from "lucide-react-native";
+import { useRouter } from "expo-router";
+import { Building, Car, DoorOpen, Home, Settings, Unlock, Users } from "lucide-react-native";
 import React, { useState } from "react";
 import { ScrollView, StatusBar, Text, TouchableOpacity, View } from "react-native";
 import Animated, {
@@ -14,6 +15,7 @@ import Animated, {
 export default function IntercomCallScreen() {
   const { data: apartmentData, isLoading, error } = useApartmentData();
   const { data: gatesData, isLoading: isGatesLoading, error: gatesError } = useGates(apartmentData?.apartment);
+  const router = useRouter();
   const [isDoorOpened, setIsDoorOpened] = useState(false);
   const [isDoorLoading, setIsDoorLoading] = useState(false);
   const [isGateOpened, setIsGateOpened] = useState(false);
@@ -153,6 +155,19 @@ export default function IntercomCallScreen() {
   return (
     <View className="flex-1 bg-gray-900 w-full">
       <StatusBar barStyle="light-content" backgroundColor="#111827" />
+      
+      {/* Header with Settings */}
+      <View className="absolute top-0 left-0 right-0 z-10 pt-12 pb-4 px-6 bg-gray-900/80 backdrop-blur-sm">
+        <View className="flex-row items-center justify-between">
+          <Text className="text-white text-xl font-semibold">Домофон</Text>
+          <TouchableOpacity
+            onPress={() => router.push("/(protected)/profile")}
+            className="w-10 h-10 rounded-full bg-gray-800 items-center justify-center"
+          >
+            <Settings size={20} color="white" />
+          </TouchableOpacity>
+        </View>
+      </View>
       
       {/* Background gradient effect */}
       <View className="absolute inset-0 bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 opacity-90" />
