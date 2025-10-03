@@ -12,7 +12,7 @@ import Animated, {
   withTiming
 } from "react-native-reanimated";
 
-export default function IntercomCallScreen() {
+export default function HomeScreen() {
   const { data: apartmentData, isLoading, error } = useApartmentData();
   const { data: gatesData, isLoading: isGatesLoading, error: gatesError } = useGates(apartmentData?.apartment);
   const router = useRouter();

@@ -1,6 +1,6 @@
 import LoadingFullScreen from "@/components/LoadingFullScreen";
 import { useUserApartment } from "@/queries/auth";
-import IntercomCallScreen from "@/screens/calling/call-screen";
+import HomeScreen from "@/screens/calling/home-screen";
 import { Redirect } from "expo-router";
 import { View } from "react-native";
 
@@ -23,8 +23,8 @@ export default function Index() {
         justifyContent: "center",
         alignItems: "center",
       }}
-    >
-      <IntercomCallScreen />
+    > 
+      <HomeScreen />
     </View>
   );
 }
